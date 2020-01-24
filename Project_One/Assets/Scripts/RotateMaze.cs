@@ -15,11 +15,11 @@ public class RotateMaze : MonoBehaviour
 
     // Update is called once per frame
     void Update(){
-        if (Input.GetKeyDown(KeyCode.Q)) {
+        if (Input.GetKeyDown(KeyCode.A)) {
             Rotate(true);
             transform.Rotate(transform.forward, 90.0f);
         }
-        else if (Input.GetKeyDown(KeyCode.E)){
+        else if (Input.GetKeyDown(KeyCode.D)){
             Rotate(false);
             transform.Rotate(transform.forward, -90);
         }
