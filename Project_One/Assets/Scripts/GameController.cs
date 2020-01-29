@@ -13,7 +13,7 @@ public class GameController : MonoBehaviour
         generator = GetComponent<MazeConstructor>();
         // A private variable that stores a reference returned by the GetComponent()
 
-        generator.GenerateNewMaze(13, 15);
+        generator.GenerateNewMaze(31, 31);
         //parameters dictate how large to make the maze. While they aren't being used quite yet, 
         //these size parameters determine the number of rows and columns in the grid respectively.
 

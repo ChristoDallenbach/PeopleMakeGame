@@ -14,6 +14,33 @@ public class MazeConstructor : MonoBehaviour
 
     private MazeMeshGenerator meshGenerator;
 
+    public float hallWidth
+    {
+        get; private set;
+    }
+    public float hallHeight
+    {
+        get; private set;
+    }
+
+    public int startRow
+    {
+        get; private set;
+    }
+    public int startCol
+    {
+        get; private set;
+    }
+
+    public int goalRow
+    {
+        get; private set;
+    }
+    public int goalCol
+    {
+        get; private set;
+    }
+
     // makes it read-only outside this class.
     public int[,] data
     {
@@ -100,4 +127,44 @@ public class MazeConstructor : MonoBehaviour
         mr.materials = new Material[2] { mazeMat1, mazeMat2 };
     }
 
+    private void FindStartPosition()
+    {
+        int[,] maze = data;
+        int rMax = maze.GetUpperBound(0);
+        int cMax = maze.GetUpperBound(1);
+
+        for (int i = 0; i <= rMax; i++)
+        {
+            for (int j = 0; j <= cMax; j++)
+            {
+                if (maze[i, j] == 0)
+                {
+                    startRow = i;
+                    startCol = j;
+                    return;
+                }
+            }
+        }
+    }
+
+    private void FindGoalPosition()
+    {
+        int[,] maze = data;
+        int rMax = maze.GetUpperBound(0);
+        int cMax = maze.GetUpperBound(1);
+
+        // loop top to bottom, right to left
+        for (int i = rMax; i >= 0; i--)
+        {
+            for (int j = cMax; j >= 0; j--)
+            {
+                if (maze[i, j] == 0)
+                {
+                    goalRow = i;
+                    goalCol = j;
+                    return;
+                }
+            }
+        }
+    }
 }
