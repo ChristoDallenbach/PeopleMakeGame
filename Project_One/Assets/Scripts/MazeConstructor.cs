@@ -9,6 +9,8 @@ public class MazeConstructor : MonoBehaviour
     [SerializeField] private Material mazeMat2;
     [SerializeField] private Material startMat;
     [SerializeField] private Material treasureMat;
+    [SerializeField] private GameObject player;
+    [SerializeField] private GameObject end;
 
     private MazeDataGenerator dataGenerator;
 
@@ -70,6 +72,9 @@ public class MazeConstructor : MonoBehaviour
         }
 
         data = dataGenerator.FromDimensions(sizeRows, sizeCols);
+
+        FindStartPosition();
+        FindGoalPosition();
         DisplayMaze();
     }
 
@@ -141,6 +146,7 @@ public class MazeConstructor : MonoBehaviour
                 {
                     startRow = i;
                     startCol = j;
+                    player.transform.position = new Vector3(startCol*hallWidth, 0, startRow*hallWidth);
                     return;
                 }
             }
@@ -162,6 +168,7 @@ public class MazeConstructor : MonoBehaviour
                 {
                     goalRow = i;
                     goalCol = j;
+                    end.transform.position = new Vector3(goalCol * 4-8, 1, goalRow * 4-8);
                     return;
                 }
             }

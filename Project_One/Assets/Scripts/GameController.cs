@@ -7,13 +7,14 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     private MazeConstructor generator;
+    [SerializeField] private int height, width;
 
     void Start()
     {
         generator = GetComponent<MazeConstructor>();
         // A private variable that stores a reference returned by the GetComponent()
 
-        generator.GenerateNewMaze(31, 31);
+        generator.GenerateNewMaze(height, width);
         //parameters dictate how large to make the maze. While they aren't being used quite yet, 
         //these size parameters determine the number of rows and columns in the grid respectively.
 

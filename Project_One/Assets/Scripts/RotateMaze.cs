@@ -19,14 +19,14 @@ public class RotateMaze : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A)) {
             if (!rotationActive){
                 rotationActive = true;
-                destination = transform.rotation.eulerAngles.z + 90;
+                destination = transform.rotation.eulerAngles.y + 90;
             }
         }
         else if (Input.GetKeyDown(KeyCode.D)){
             if (!rotationActive)
             {
                 rotationActive = true;
-                destination = transform.rotation.eulerAngles.z - 90;
+                destination = transform.rotation.eulerAngles.y - 90;
             }
         }
         RotateModel();
@@ -35,9 +35,9 @@ public class RotateMaze : MonoBehaviour
     void RotateModel(){
         if (rotationActive)
         {
-            Time.timeScale = 0.25f;
-            if (Quaternion.Angle(transform.rotation, Quaternion.Euler(transform.rotation.x, transform.rotation.y, destination)) > 1e-3)//Compare the two rotations, with a small buffer
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(transform.rotation.x, transform.rotation.y, destination), Time.deltaTime * 250);
+            Time.timeScale = 0.1f;
+            if (Quaternion.Angle(transform.rotation, Quaternion.Euler(transform.rotation.x, destination, transform.rotation.z)) > 1e-3)//Compare the two rotations, with a small buffer
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(transform.rotation.x, destination, transform.rotation.z), Time.deltaTime * 500);
             else{
                 rotationActive = false;
                 Time.timeScale = 1.0f;
