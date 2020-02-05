@@ -19,4 +19,12 @@ public class GameController : MonoBehaviour
         //these size parameters determine the number of rows and columns in the grid respectively.
 
     }
+
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            generator.GenerateNewMaze(height, width);
+        }
+    }
 }
