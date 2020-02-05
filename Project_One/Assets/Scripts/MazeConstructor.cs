@@ -12,6 +12,9 @@ public class MazeConstructor : MonoBehaviour
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject end;
 
+    //The player position, in relation to the maze
+    private int playerX, playerZ;
+
     private MazeDataGenerator dataGenerator;
 
     private MazeMeshGenerator meshGenerator;
@@ -62,6 +65,8 @@ public class MazeConstructor : MonoBehaviour
             {1, 0, 1},
             {1, 1, 1}
         };
+        hallWidth = 4;
+        hallHeight = 4;
     }
 
     public void GenerateNewMaze(int sizeRows, int sizeCols)
@@ -192,5 +197,17 @@ public class MazeConstructor : MonoBehaviour
                 }
             }
         }
+    }
+
+    void Update(){
+        playerX = (int)((4+player.transform.position.x) / 4);
+        playerZ = (int)((2+player.transform.position.z) / 4);
+
+        if (playerX == goalRow && playerZ == goalCol)
+        {
+            Debug.Log("You Win!");
+        }
+        else
+            Debug.Log(playerX + ", " + playerZ);
     }
 }
