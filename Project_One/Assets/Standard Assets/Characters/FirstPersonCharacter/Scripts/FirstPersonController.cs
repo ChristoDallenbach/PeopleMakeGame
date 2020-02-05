@@ -29,6 +29,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private AudioClip m_LandSound;           // the sound played when character touches back on ground.
 
         [SerializeField] private GameObject maze;
+        public float startingSpeed;
         
         private Camera m_Camera;
         private bool m_Jump;
@@ -57,6 +58,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_Jumping = false;
             m_AudioSource = GetComponent<AudioSource>();
 			m_MouseLook.Init(transform , m_Camera.transform);
+            startingSpeed = m_WalkSpeed;
         }
 
 
@@ -107,8 +109,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
                                m_CharacterController.height/2f, Physics.AllLayers, QueryTriggerInteraction.Ignore);
             desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
 
-            if (m_WalkSpeed < 50)
-                m_WalkSpeed += Time.deltaTime;
+            //if (m_WalkSpeed < 50)
+                //m_WalkSpeed += Time.deltaTime;
             m_MoveDir = transform.forward * m_WalkSpeed;
             m_CollisionFlags = m_CharacterController.Move(m_MoveDir*Time.fixedDeltaTime);
 
