@@ -12,9 +12,6 @@ public class MazeConstructor : MonoBehaviour
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject end;
 
-    //The player position, in relation to the maze
-    private int playerX, playerZ;
-
     private MazeDataGenerator dataGenerator;
 
     private MazeMeshGenerator meshGenerator;
@@ -65,8 +62,6 @@ public class MazeConstructor : MonoBehaviour
             {1, 0, 1},
             {1, 1, 1}
         };
-        hallWidth = 4;
-        hallHeight = 4;
     }
 
     public void GenerateNewMaze(int sizeRows, int sizeCols)
@@ -76,30 +71,11 @@ public class MazeConstructor : MonoBehaviour
             Debug.LogError("Odd numbers work better for dungeon size.");
         }
 
-        DisposeOldMaze();
-
         data = dataGenerator.FromDimensions(sizeRows, sizeCols);
 
         FindStartPosition();
         FindGoalPosition();
-
-        hallWidth = meshGenerator.width;
-        hallHeight = meshGenerator.height;
-        UnityStandardAssets.Characters.FirstPerson.FirstPersonController controller = player.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>();
-        controller.m_WalkSpeed = 5;
-        player.transform.position = new Vector3(startCol * hallWidth, 0, startRow * hallWidth);
-        end.transform.position = new Vector3(goalCol * 4 - 8, 1, goalRow * 4 - 8);
-
         DisplayMaze();
-    }
-
-    public void DisposeOldMaze()
-    {
-        GameObject[] objects = GameObject.FindGameObjectsWithTag("Generated");
-        foreach (GameObject go in objects)
-        {
-            Destroy(go);
-        }
     }
 
     void OnGUI()
@@ -170,7 +146,7 @@ public class MazeConstructor : MonoBehaviour
                 {
                     startRow = i;
                     startCol = j;
-                    
+                    player.transform.position = new Vector3(startCol*hallWidth, 0, startRow*hallWidth);
                     return;
                 }
             }
@@ -192,22 +168,10 @@ public class MazeConstructor : MonoBehaviour
                 {
                     goalRow = i;
                     goalCol = j;
-                    
+                    end.transform.position = new Vector3(goalCol * 4-8, 1, goalRow * 4-8);
                     return;
                 }
             }
         }
-    }
-
-    void Update(){
-        playerX = (int)((4+player.transform.position.x) / 4);
-        playerZ = (int)((2+player.transform.position.z) / 4);
-
-        if (playerX == goalRow && playerZ == goalCol)
-        {
-            Debug.Log("You Win!");
-        }
-        else
-            Debug.Log(playerX + ", " + playerZ);
     }
 }
