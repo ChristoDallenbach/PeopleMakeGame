@@ -55,7 +55,7 @@ public class RotateMaze : MonoBehaviour
         {
             Time.timeScale = 0.2f;
             if (Quaternion.Angle(transform.rotation, Quaternion.Euler(transform.rotation.x, destination, transform.rotation.z)) > 1e-1)//Compare the two rotations, with a small buffer
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(transform.rotation.x, destination, transform.rotation.z), Time.deltaTime * 500);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(transform.rotation.x, destination, transform.rotation.z), Time.deltaTime * 800);
             else
             {
                 controller.m_WalkSpeed = prevSpeed;
