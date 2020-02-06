@@ -170,10 +170,7 @@ public class MazeConstructor : MonoBehaviour
                 {
                     goalRow = i;
                     goalCol = j;
-                    if (level%2 == 0)
-                        end.transform.position = new Vector3(startCol * 4, 1, startRow * 4);
-                    else
-                        end.transform.position = new Vector3(goalCol * 4-8, 1, goalRow * 4-8);
+                    end.transform.position = new Vector3(goalCol * 3.75f, 1, goalRow * 3.75f);
                     return;
                 }
             }
