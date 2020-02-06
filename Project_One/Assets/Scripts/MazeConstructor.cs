@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class MazeConstructor : MonoBehaviour
 {
@@ -148,7 +149,9 @@ public class MazeConstructor : MonoBehaviour
                 {
                     startRow = i;
                     startCol = j;
-                    player.transform.position = new Vector3(startCol*hallWidth, 0, startRow*hallWidth);
+                    player.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = false;
+                    player.transform.position = new Vector3(startCol*3.75f, 1, startRow*3.75f);
+                    StartCoroutine(Enable(0.25f));
                     return;
                 }
             }
@@ -186,5 +189,11 @@ public class MazeConstructor : MonoBehaviour
             Destroy(go);
         }
         this.level = level;
+    }
+
+    private IEnumerator Enable(float time)
+    {
+        yield return new WaitForSeconds(time);
+        player.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = true;
     }
 }
