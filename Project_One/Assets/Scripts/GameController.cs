@@ -36,12 +36,12 @@ public class GameController : MonoBehaviour
         //increment player level
         level++;
 
-        generator.DisposeOldMaze();
+        generator.DisposeOldMaze(level);
         //generate new maze
         generator.GenerateNewMaze(height, width);
         //update UI
         Text.text = "Level: "+level;
-
+        
     }
 
     //function: PlayerLose. call when player reaches the lose state by hitting obstacle or wall. reset score to 0 and reset maze

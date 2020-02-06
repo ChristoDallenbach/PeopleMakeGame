@@ -11,6 +11,7 @@ public class MazeConstructor : MonoBehaviour
     [SerializeField] private Material treasureMat;
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject end;
+    private int level;
 
     private MazeDataGenerator dataGenerator;
 
@@ -62,6 +63,7 @@ public class MazeConstructor : MonoBehaviour
             {1, 0, 1},
             {1, 1, 1}
         };
+        level = 1;
     }
 
     public void GenerateNewMaze(int sizeRows, int sizeCols)
@@ -164,23 +166,28 @@ public class MazeConstructor : MonoBehaviour
         {
             for (int j = cMax; j >= 0; j--)
             {
-                if (maze[i, j] == 0)
+                if (maze[i, j] == 0 && Random.Range(0.0f,1.0f) > 0.95f)
                 {
                     goalRow = i;
                     goalCol = j;
-                    end.transform.position = new Vector3(goalCol * 4-8, 1, goalRow * 4-8);
+                    if (level%2 == 0)
+                        end.transform.position = new Vector3(startCol * 4, 1, startRow * 4);
+                    else
+                        end.transform.position = new Vector3(goalCol * 4-8, 1, goalRow * 4-8);
                     return;
                 }
             }
         }
+        FindGoalPosition();//Failsafe to restart goal selecting if the method never chooses a goal
     }
 
-    public void DisposeOldMaze()
+    public void DisposeOldMaze(int level)
     {
         GameObject[] objects = GameObject.FindGameObjectsWithTag("Generated");
         foreach (GameObject go in objects)
         {
             Destroy(go);
         }
+        this.level = level;
     }
 }
