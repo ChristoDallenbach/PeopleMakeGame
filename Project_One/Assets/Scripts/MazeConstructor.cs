@@ -174,4 +174,13 @@ public class MazeConstructor : MonoBehaviour
             }
         }
     }
+
+    public void DisposeOldMaze()
+    {
+        GameObject[] objects = GameObject.FindGameObjectsWithTag("Generated");
+        foreach (GameObject go in objects)
+        {
+            Destroy(go);
+        }
+    }
 }

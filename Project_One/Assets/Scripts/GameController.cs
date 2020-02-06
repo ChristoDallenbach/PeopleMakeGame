@@ -28,11 +28,7 @@ public class GameController : MonoBehaviour
         Text = GameObject.Find("Text").GetComponent<Text>();
 
         Text.text = "Level: "+level;
-            
        }
-
-
-
 
     //function: NextLevel. call when player reaches maze goal. raise level, generate new maze.
     public void NextLevel()
@@ -40,6 +36,7 @@ public class GameController : MonoBehaviour
         //increment player level
         level++;
 
+        generator.DisposeOldMaze();
         //generate new maze
         generator.GenerateNewMaze(height, width);
         //update UI
