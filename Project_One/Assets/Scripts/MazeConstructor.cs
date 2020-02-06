@@ -76,6 +76,8 @@ public class MazeConstructor : MonoBehaviour
 
         data = dataGenerator.FromDimensions(sizeRows, sizeCols);
 
+        player.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().m_WalkSpeed = player.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().m_StartSpeed;
+
         FindStartPosition();
         FindGoalPosition();
         DisplayMaze();

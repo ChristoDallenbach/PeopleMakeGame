@@ -11,14 +11,16 @@ public class RotateMaze : MonoBehaviour
     private int[,] mazeMat;
     private bool isRotate;
     private float destination;
-
-  
+    private float prevSpeed;
+    private UnityStandardAssets.Characters.FirstPerson.FirstPersonController controller;
 
     // Start is called before the first frame update
     void Start()
     {
         mazeMat = new int[size, size];
         isRotate = false;
+        prevSpeed = 0;
+        controller = this.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>();
     }
 
     // Update is called once per frame
@@ -28,6 +30,8 @@ public class RotateMaze : MonoBehaviour
         {
             if (!isRotate)
             {
+                prevSpeed = controller.m_WalkSpeed;
+                controller.m_WalkSpeed = controller.m_StartSpeed;
                 isRotate = true;
                 destination = transform.rotation.eulerAngles.y + 90;
             }
@@ -36,6 +40,8 @@ public class RotateMaze : MonoBehaviour
         {
             if (!isRotate)
             {
+                prevSpeed = controller.m_WalkSpeed;
+                controller.m_WalkSpeed = controller.m_StartSpeed;
                 isRotate = true;
                 destination = transform.rotation.eulerAngles.y - 90;
             }
@@ -52,6 +58,7 @@ public class RotateMaze : MonoBehaviour
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(transform.rotation.x, destination, transform.rotation.z), Time.deltaTime * 500);
             else
             {
+                controller.m_WalkSpeed = prevSpeed;
                 isRotate = false;
                 Time.timeScale = 1.0f;
             }
