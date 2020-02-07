@@ -38,6 +38,10 @@ public class MazeMeshGenerator
             {
                 if (data[i, j] != 1)
                 {
+                    if(data[i,j] == 2)
+                    {
+                        //Instantiate(trap, new Vector3(i, j, 0), Quaternion.identity);
+                    }
                     // floor
                     AddQuad(Matrix4x4.TRS(
                         new Vector3(j * width, 0, i * width),

@@ -4,6 +4,7 @@ using UnityEngine;
 public class MazeDataGenerator
 {
     public float placementThreshold;    // chance of empty space
+    public float trapThreshold;
 
     public MazeDataGenerator()
     {
@@ -11,6 +12,8 @@ public class MazeDataGenerator
         //used by the data generation algorithm to determine whether a space is empty. 
         //This variable is assigned a default value in the class constructor, 
         //but it's made public so that other code can tune the generated maze. 
+
+        trapThreshold = .1f;
     }
 
     public int[,] FromDimensions(int sizeRows, int sizeCols)
@@ -46,10 +49,34 @@ public class MazeDataGenerator
                         int b = a != 0 ? 0 : (Random.value < .5 ? -1 : 1);
                         maze[i + a, j + b] = 1;
                     }
+                    else
+                    {
+                        if (Random.value > trapThreshold)
+                        {
+                            maze[i, j] = 2;
+
+                            /*
+                            int a = Random.value < .5 ? 0 : (Random.value < .5 ? -1 : 1);
+                            int b = a != 0 ? 0 : (Random.value < .5 ? -1 : 1);
+                            maze[i + a, j + b] = 2;
+                            */
+                        }
+                    }
                 }
             }
         }
+        //Debug.Log(maze);
 
+        string s = "";
+        for (int i = 0; i < rMax; i++)
+        {
+            for (int j = 0; j < cMax; j++)
+            {
+                s += maze[i, j];
+            }
+            s += "\n";
+        }
+        Debug.Log(s);
         return maze;
     }
 }
