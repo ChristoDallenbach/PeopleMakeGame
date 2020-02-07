@@ -108,7 +108,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
 
             if (m_WalkSpeed < 50)
-                m_WalkSpeed += Time.deltaTime;
+                m_WalkSpeed += Time.deltaTime/2;
             m_MoveDir = transform.forward * m_WalkSpeed;
             m_CollisionFlags = m_CharacterController.Move(m_MoveDir*Time.fixedDeltaTime);
 
