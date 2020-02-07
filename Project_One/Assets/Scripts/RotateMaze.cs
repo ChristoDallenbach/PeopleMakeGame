@@ -31,7 +31,7 @@ public class RotateMaze : MonoBehaviour
             if (!isRotate)
             {
                 prevSpeed = controller.m_WalkSpeed;
-                controller.m_WalkSpeed = controller.m_StartSpeed/2;
+                controller.m_WalkSpeed = controller.m_StartSpeed;
                 isRotate = true;
                 destination = transform.rotation.eulerAngles.y + 90;
             }
@@ -41,7 +41,7 @@ public class RotateMaze : MonoBehaviour
             if (!isRotate)
             {
                 prevSpeed = controller.m_WalkSpeed;
-                controller.m_WalkSpeed = controller.m_StartSpeed/2;
+                controller.m_WalkSpeed = controller.m_StartSpeed;
                 isRotate = true;
                 destination = transform.rotation.eulerAngles.y - 90;
             }
