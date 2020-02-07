@@ -12,7 +12,6 @@ public class MazeConstructor : MonoBehaviour
     [SerializeField] private Material treasureMat;
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject end;
-    [SerializeField] private GameObject trap;
     private int level;
 
     private MazeDataGenerator dataGenerator;
@@ -79,7 +78,6 @@ public class MazeConstructor : MonoBehaviour
 
         player.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().m_WalkSpeed = player.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().m_StartSpeed;
 
-        DeployTraps();
         FindStartPosition();
         FindGoalPosition();
         DisplayMaze();
@@ -110,13 +108,9 @@ public class MazeConstructor : MonoBehaviour
                 {
                     msg += "....";
                 }
-                else if (maze[i,j] == 1)
-                {
-                    msg += "==";
-                }
                 else
                 {
-                    msg += "////";
+                    msg += "==";
                 }
             }
             msg += "\n";
@@ -141,24 +135,6 @@ public class MazeConstructor : MonoBehaviour
 
         MeshRenderer mr = go.AddComponent<MeshRenderer>();
         mr.materials = new Material[2] { mazeMat1, mazeMat2 };
-    }
-
-    private void DeployTraps()
-    {
-        int[,] maze = data;
-        int rMax = maze.GetUpperBound(0);
-        int cMax = maze.GetUpperBound(1);
-
-        for (int i = 0; i <= rMax; i++)
-        {
-            for (int j = 0; j <= cMax; j++)
-            {
-                if (maze[i, j] == 2)
-                {
-                    Instantiate(trap, new Vector3(i, 0, j), trap.transform.rotation);
-                }
-            }
-        }
     }
 
     private void FindStartPosition()
