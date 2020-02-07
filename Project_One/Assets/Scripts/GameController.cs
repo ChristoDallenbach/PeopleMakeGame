@@ -17,6 +17,9 @@ public class GameController : MonoBehaviour
     public int level = 1; //which level the player is currently on, starting at 1 and rising
 
     public Text Text;
+
+    public GameObject PauseMenu;
+    public GameObject StartButton;
     void Start()
     {
         generator = GetComponent<MazeConstructor>();
@@ -28,6 +31,8 @@ public class GameController : MonoBehaviour
         Text = GameObject.Find("Text").GetComponent<Text>();
 
         Text.text = "Level: "+level;
+        PauseMenu = GameObject.Find("Panel");
+        StartButton = GameObject.Find("StartButton");
        }
 
     //function: NextLevel. call when player reaches maze goal. raise level, generate new maze.
@@ -58,5 +63,14 @@ public class GameController : MonoBehaviour
         Text.text = "Level: " + level;
     }
 
+    public void DisablePaused()
+    {
+        //reverse the visibility of the panels image
+        PauseMenu.GetComponent<Image>().enabled = false;
+        //get the button
+        //reverse visability of button's image
+        StartButton.SetActive(false);
+        
+    }
 
 }
