@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class MazeConstructor : MonoBehaviour
 {
@@ -11,9 +12,7 @@ public class MazeConstructor : MonoBehaviour
     [SerializeField] private Material treasureMat;
     [SerializeField] private GameObject player;
     [SerializeField] private GameObject end;
-
-    //The player position, in relation to the maze
-    private int playerX, playerZ;
+    private int level;
 
     private MazeDataGenerator dataGenerator;
 
@@ -65,8 +64,7 @@ public class MazeConstructor : MonoBehaviour
             {1, 0, 1},
             {1, 1, 1}
         };
-        hallWidth = 4;
-        hallHeight = 4;
+        level = 1;
     }
 
     public void GenerateNewMaze(int sizeRows, int sizeCols)
@@ -76,30 +74,13 @@ public class MazeConstructor : MonoBehaviour
             Debug.LogError("Odd numbers work better for dungeon size.");
         }
 
-        DisposeOldMaze();
-
         data = dataGenerator.FromDimensions(sizeRows, sizeCols);
+
+        player.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().m_WalkSpeed = player.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().m_StartSpeed;
 
         FindStartPosition();
         FindGoalPosition();
-
-        hallWidth = meshGenerator.width;
-        hallHeight = meshGenerator.height;
-        UnityStandardAssets.Characters.FirstPerson.FirstPersonController controller = player.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>();
-        controller.m_WalkSpeed = 5;
-        player.transform.position = new Vector3(startCol * hallWidth, 0, startRow * hallWidth);
-        end.transform.position = new Vector3(goalCol * 4 - 8, 1, goalRow * 4 - 8);
-
         DisplayMaze();
-    }
-
-    public void DisposeOldMaze()
-    {
-        GameObject[] objects = GameObject.FindGameObjectsWithTag("Generated");
-        foreach (GameObject go in objects)
-        {
-            Destroy(go);
-        }
     }
 
     void OnGUI()
@@ -170,7 +151,9 @@ public class MazeConstructor : MonoBehaviour
                 {
                     startRow = i;
                     startCol = j;
-                    
+                    player.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = false;
+                    player.transform.position = new Vector3(startCol*3.75f, 1, startRow*3.75f);
+                    StartCoroutine(Enable(0.25f));
                     return;
                 }
             }
@@ -188,26 +171,31 @@ public class MazeConstructor : MonoBehaviour
         {
             for (int j = cMax; j >= 0; j--)
             {
-                if (maze[i, j] == 0)
+                if (maze[i, j] == 0 && Random.Range(0.0f,1.0f) > 0.95f)
                 {
                     goalRow = i;
                     goalCol = j;
-                    
+                    end.transform.position = new Vector3(goalCol * 3.75f, 1, goalRow * 3.75f);
                     return;
                 }
             }
         }
+        FindGoalPosition();//Failsafe to restart goal selecting if the method never chooses a goal
     }
 
-    void Update(){
-        playerX = (int)((4+player.transform.position.x) / 4);
-        playerZ = (int)((2+player.transform.position.z) / 4);
-
-        if (playerX == goalRow && playerZ == goalCol)
+    public void DisposeOldMaze(int level)
+    {
+        GameObject[] objects = GameObject.FindGameObjectsWithTag("Generated");
+        foreach (GameObject go in objects)
         {
-            Debug.Log("You Win!");
+            Destroy(go);
         }
-        else
-            Debug.Log(playerX + ", " + playerZ);
+        this.level = level;
+    }
+
+    private IEnumerator Enable(float time)
+    {
+        yield return new WaitForSeconds(time);
+        player.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = true;
     }
 }

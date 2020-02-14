@@ -2,22 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// to add: lower FOV or add motion blur while turning (if you can, do this incrementally to get an ease in/ease out effect)
+/// </summary>
 public class RotateMaze : MonoBehaviour
 {
     public int size;
     private int[,] mazeMat;
     private bool isRotate;
     private float destination;
-
+    private float prevSpeed;
     private UnityStandardAssets.Characters.FirstPerson.FirstPersonController controller;
-    private float currentWalkSpeed;
 
     // Start is called before the first frame update
     void Start()
     {
         mazeMat = new int[size, size];
         isRotate = false;
-        controller = GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>();
+        prevSpeed = 0;
+        controller = this.GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>();
     }
 
     // Update is called once per frame
@@ -27,7 +30,8 @@ public class RotateMaze : MonoBehaviour
         {
             if (!isRotate)
             {
-                currentWalkSpeed = controller.m_WalkSpeed;
+                prevSpeed = controller.m_WalkSpeed;
+                controller.m_WalkSpeed = controller.m_StartSpeed/2;
                 isRotate = true;
                 destination = transform.rotation.eulerAngles.y + 90;
             }
@@ -36,7 +40,8 @@ public class RotateMaze : MonoBehaviour
         {
             if (!isRotate)
             {
-                currentWalkSpeed = controller.m_WalkSpeed;
+                prevSpeed = controller.m_WalkSpeed;
+                controller.m_WalkSpeed = controller.m_StartSpeed/2;
                 isRotate = true;
                 destination = transform.rotation.eulerAngles.y - 90;
             }
@@ -48,13 +53,12 @@ public class RotateMaze : MonoBehaviour
     {
         if (isRotate)
         {
-            controller.m_WalkSpeed = 1;
             Time.timeScale = 0.2f;
             if (Quaternion.Angle(transform.rotation, Quaternion.Euler(transform.rotation.x, destination, transform.rotation.z)) > 1e-1)//Compare the two rotations, with a small buffer
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(transform.rotation.x, destination, transform.rotation.z), Time.deltaTime * 500);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(transform.rotation.x, destination, transform.rotation.z), Time.deltaTime * 800);
             else
             {
-                controller.m_WalkSpeed = currentWalkSpeed;
+                controller.m_WalkSpeed = prevSpeed;
                 isRotate = false;
                 Time.timeScale = 1.0f;
             }

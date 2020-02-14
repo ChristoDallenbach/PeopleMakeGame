@@ -91,6 +91,15 @@ public class MazeMeshGenerator
                         ), ref newVertices, ref newUVs, ref wallTriangles);
                     }
                 }
+                else//if area is blank
+                {
+                    // floor
+                    AddQuad(Matrix4x4.TRS(
+                        new Vector3(j * width, height, i * width),
+                        Quaternion.LookRotation(Vector3.up),
+                        new Vector3(width, width, 1)
+                    ), ref newVertices, ref newUVs, ref wallTriangles);
+                }
             }
         }
 
