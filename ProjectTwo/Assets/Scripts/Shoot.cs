@@ -7,7 +7,6 @@ public class Shoot : MonoBehaviour
     private Ray shotRay;
     private Vector3 shootDirection;
     [SerializeField] private GameObject cubert;
-    [SerializeField] private Camera camera;
     private EnemyMove move;
 
     // Start is called before the first frame update
@@ -25,7 +24,7 @@ public class Shoot : MonoBehaviour
             if(touch.phase == TouchPhase.Began)
             {
                 shootDirection = touch.position;
-                shotRay = camera.ScreenPointToRay(shootDirection);
+                shotRay = Camera.main.ScreenPointToRay(shootDirection);
 
                 ShootRay(shotRay, move);
             }
@@ -33,7 +32,7 @@ public class Shoot : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             shootDirection = Input.mousePosition;
-            shotRay = camera.ScreenPointToRay(shootDirection);
+            shotRay = Camera.main.ScreenPointToRay(shootDirection);
 
             ShootRay(shotRay, move);
         }
