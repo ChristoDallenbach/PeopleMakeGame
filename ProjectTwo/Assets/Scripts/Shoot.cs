@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Shoot : MonoBehaviour
 {
+    private Ray shotRay;
     private Vector3 shootDirection;
-    private Vector3 startPosition;
     [SerializeField] private GameObject cubert;
     [SerializeField] private Camera camera;
     private EnemyMove move;
@@ -13,26 +13,40 @@ public class Shoot : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        startPosition = Input.mousePosition;
-        shootDirection = this.transform.forward;
+        shootDirection = Input.mousePosition;
         move = cubert.GetComponent<EnemyMove>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        startPosition = Input.mousePosition;
-        startPosition = camera.ScreenToWorldPoint(startPosition);
-        startPosition.z = -10;
+        foreach (Touch touch in Input.touches)
+        { 
+            if(touch.phase == TouchPhase.Began)
+            {
+                shootDirection = touch.position;
+                shotRay = camera.ScreenPointToRay(shootDirection);
 
+                ShootRay(shotRay, move);
+            }
+        }
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.DrawRay((startPosition), shootDirection, Color.red, 5);
-            if (Physics.Raycast((startPosition), shootDirection))
-            {
-                move.direction = new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0);
-            }
+            shootDirection = Input.mousePosition;
+            shotRay = camera.ScreenPointToRay(shootDirection);
+
+            ShootRay(shotRay, move);
         }
     }
 
+
+    private void ShootRay(Ray shotRay, EnemyMove move)
+    {
+        Debug.DrawRay(shotRay.origin, shotRay.direction, Color.red, 5);
+
+        if (Physics.Raycast(shotRay.origin, shotRay.direction))
+        {
+            move.direction = new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0);
+        }
+    }
 }
