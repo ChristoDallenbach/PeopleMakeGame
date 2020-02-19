@@ -28,21 +28,13 @@ public class EnemyMove : MonoBehaviour
     {
         Vector3 position = this.transform.position;
 
-        if (position.x < cameraMin.x)
+        if (position.x < cameraMin.x || position.x > cameraMax.x)
         {
-            direction = new Vector3(Random.Range(0.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
+            direction.x = -direction.x;
         }
-        else if (position.x > cameraMax.x)
+        if (position.y < cameraMin.y || position.y > cameraMax.y)
         {
-            direction = new Vector3(Random.Range(-1.0f, 0.0f), Random.Range(-1.0f, 1.0f), 0);
-        }
-        if (position.y < cameraMin.y)
-        {
-            direction = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(0.0f, 1.0f), 0);
-        }
-        else if (position.y > cameraMax.y)
-        {
-            direction = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 0.0f), 0);
+            direction.y = -direction.y;
         }
         direction = direction.normalized;
 

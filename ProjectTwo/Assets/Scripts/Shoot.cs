@@ -46,7 +46,7 @@ public class Shoot : MonoBehaviour
 
         if (Physics.Raycast(shotRay.origin, shotRay.direction))
         {
-            move.direction = new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 0);
+            move.direction = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
         }
     }
 }
