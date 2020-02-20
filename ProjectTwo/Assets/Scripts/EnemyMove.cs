@@ -13,7 +13,7 @@ public class EnemyMove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        direction = new Vector3(1,0,0);
+        direction = Camera.main.transform.position - transform.position;
         cameraMin = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, 10));
         cameraMax = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 10));
     }

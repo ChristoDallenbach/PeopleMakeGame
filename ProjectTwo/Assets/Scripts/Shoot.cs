@@ -6,6 +6,7 @@ public class Shoot : MonoBehaviour
 {
     private Ray shotRay;
     private Vector3 shootDirection;
+    public float radius;
     [SerializeField] private GameObject cubert;
     private EnemyMove move;
 
@@ -45,7 +46,9 @@ public class Shoot : MonoBehaviour
 
         if (Physics.Raycast(shotRay.origin, shotRay.direction))
         {
-            move.direction = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0);
+            Vector3 temp = Random.insideUnitCircle.normalized * radius;
+            cubert.transform.position = new Vector3(temp.x, 0, temp.y);
+            move.direction = transform.position - cubert.transform.position;
         }
     }
 }
