@@ -137,6 +137,11 @@ PrefabInstance:
       propertyPath: camera
       value: 
       objectReference: {fileID: 2136122146}
+    - target: {fileID: 5008842797999650970, guid: 9aa88374a0dc52543919cc96681e12e2,
+        type: 3}
+      propertyPath: radius
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5008842797999650971, guid: 9aa88374a0dc52543919cc96681e12e2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -373,7 +378,7 @@ PrefabInstance:
     - target: {fileID: 745519604801161513, guid: 72ce17eaff6c6f34f9c5b394482ed467,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.35
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 745519604801161513, guid: 72ce17eaff6c6f34f9c5b394482ed467,
         type: 3}
