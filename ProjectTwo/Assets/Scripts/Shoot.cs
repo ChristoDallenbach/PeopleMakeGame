@@ -47,8 +47,7 @@ public class Shoot : MonoBehaviour
         if (Physics.Raycast(shotRay.origin, shotRay.direction))
         {
             Vector3 temp = Random.insideUnitCircle.normalized * radius;
-            cubert.transform.position = new Vector3(temp.x, 0, temp.y);
-            move.direction = transform.position - cubert.transform.position;
+            cubert.transform.position = new Vector3(temp.x, 0, Mathf.Abs(temp.y));
         }
     }
 }

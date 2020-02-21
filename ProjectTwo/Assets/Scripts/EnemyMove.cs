@@ -26,16 +26,7 @@ public class EnemyMove : MonoBehaviour
 
     private void Move()
     {
-        Vector3 position = this.transform.position;
-
-        if (position.x < cameraMin.x || position.x > cameraMax.x)
-        {
-            direction.x = -direction.x;
-        }
-        if (position.y < cameraMin.y || position.y > cameraMax.y)
-        {
-            direction.y = -direction.y;
-        }
+        direction = Camera.main.transform.position - transform.position;
         direction = direction.normalized;
 
         transform.position = transform.position + direction*Time.deltaTime*moveSpeed;
