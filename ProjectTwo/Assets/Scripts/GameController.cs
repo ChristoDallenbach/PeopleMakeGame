@@ -26,6 +26,7 @@ public class GameController : MonoBehaviour
     {
         if (CheckPause())//See if the game's paused
         {
+            //if the game is not paused?
             GenerateEnemies();//Code to check if new enemies need to be generated, or if the closest enemy needs to be changed
         }
     }
@@ -38,5 +39,17 @@ public class GameController : MonoBehaviour
     void GenerateEnemies()
     {
 
+    }
+    private void PauseToggle(bool pause)
+    {
+        //if we're not paused
+        //set to pause
+        //stop everything
+        // pull up pause menu
+        
+        //if we are paused
+        //we are now unpausing
+        //resume everything
+        //close pause menu
     }
 }
