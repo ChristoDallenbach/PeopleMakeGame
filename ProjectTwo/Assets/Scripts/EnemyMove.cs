@@ -24,11 +24,4 @@ public class EnemyMove : MonoBehaviour
         Move();
     }
 
-    private void Move()
-    {
-        direction = Camera.main.transform.position - transform.position;
-        direction = direction.normalized;
-
-        transform.position = transform.position + direction*Time.deltaTime*moveSpeed;
-    }
 }
