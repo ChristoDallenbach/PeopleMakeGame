@@ -39,7 +39,11 @@ public class GameController : MonoBehaviour
     void GenerateEnemies()
     {
 
+
+        // calling find closest enemy at the end of the enemy generation
+        FindClosestEnemy();
     }
+
     private void PauseToggle(bool pause)
     {
         //if we're not paused
@@ -52,4 +56,25 @@ public class GameController : MonoBehaviour
         //resume everything
         //close pause menu
     }
+
+    // method for finding the closest enemy
+    public void FindClosestEnemy()
+    {
+        // getting the smallest magnitude between player and object
+        float minDistance = (enemyList[0].transform.position - player.transform.position).magnitude;
+        int smallestIndex = 0;
+
+        // looping through to find the smallest distance
+        for (int i = 1; i < enemyList.Count; i++)
+        {
+            if((enemyList[i].transform.position - player.transform.position).magnitude < minDistance){
+                minDistance = (enemyList[i].transform.position - player.transform.position).magnitude;
+                smallestIndex = i;
+            }
+        }
+
+        // setting which enemy is closest to the player
+        closestEnemy = enemyList[smallestIndex];
+    }
 }
+
