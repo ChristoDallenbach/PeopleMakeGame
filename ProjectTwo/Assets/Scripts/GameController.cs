@@ -5,9 +5,9 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     private GameObject closestEnemy;
-    private Transform closestScript; //Replace Transform with enemy script once it's been created
+    private NormalEnemy closestScript; //Replace Transform with enemy script once it's been created
     private GameObject player;
-    private Transform playerScript; //Replace Transform with playerscript once it's been created;
+    private PlayerScript playerScript; //Replace Transform with playerscript once it's been created;
     private List<GameObject> enemyList;
 
     private float score;
@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("player");
-        playerScript = player.GetComponent<Transform>();
+        playerScript = player.GetComponent<PlayerScript>();
         enemyList = new List<GameObject>();
         score = 0;
     }

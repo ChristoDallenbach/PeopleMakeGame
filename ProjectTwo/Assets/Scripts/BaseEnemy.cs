@@ -4,7 +4,7 @@ using UnityEngine;
 
 abstract public class BaseEnemy : MonoBehaviour
 {
-    [SerializeField] private float health, damage, moveSpeed;
+    [SerializeField] protected float health, damage, moveSpeed;
     public Vector3 direction;
 
 
