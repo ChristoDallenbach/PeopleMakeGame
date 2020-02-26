@@ -45,7 +45,7 @@ public class GameController : MonoBehaviour
         //if we're not paused
         //set to pause
         //stop everything
-        // pull up pause menu
+        //pull up pause menu
         
         //if we are paused
         //we are now unpausing
