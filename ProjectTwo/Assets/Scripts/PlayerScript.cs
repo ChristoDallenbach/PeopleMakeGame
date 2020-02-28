@@ -81,7 +81,7 @@ public class PlayerScript : MonoBehaviour
     //    return enemies;
     //}
 
-    public void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter(Collision collision)
     {
         NormalEnemy normal = collision.transform.gameObject.GetComponent<NormalEnemy>();
 
