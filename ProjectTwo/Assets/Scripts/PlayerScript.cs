@@ -6,12 +6,50 @@ public class PlayerScript : MonoBehaviour
 {
     private float health;
     private int score;
+    [SerializeField] private float damage;
+
+    //shooting
+    private Ray shotRay;
+    private Vector3 shootDirection;
+
 
     // Start is called before the first frame update
     void Start()
     {
         health = 100.0f;
         score = 0;
+
+        shootDirection = Input.mousePosition;
+    }
+
+    void Update() {
+        foreach (Touch touch in Input.touches)
+        {
+            if (touch.phase == TouchPhase.Began)
+            {
+                shootDirection = touch.position;
+                shotRay = Camera.main.ScreenPointToRay(shootDirection);
+
+                ShootRay(shotRay);
+            }
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            shootDirection = Input.mousePosition;
+            shotRay = Camera.main.ScreenPointToRay(shootDirection);
+
+            ShootRay(shotRay);
+        }
+    }
+
+    private void ShootRay(Ray shotRay)
+    {
+        Debug.DrawRay(shotRay.origin, shotRay.direction, Color.red, 5);
+        RaycastHit hit;//Info on the object the ray hit
+        if(Physics.Raycast(shotRay.origin, shotRay.direction, out hit))
+        {
+            hit.transform.gameObject.GetComponent<BaseEnemy>().GetHit(damage);
+        }
     }
 
     // getter of the score so it can be displayed on the ui

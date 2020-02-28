@@ -5,19 +5,19 @@ using UnityEngine;
 abstract public class BaseEnemy : MonoBehaviour
 {
     [SerializeField] protected float health, damage, moveSpeed;
-    public Vector3 direction;
-
+    protected Vector3 direction;
+    protected bool dying;//Allows us to implement a death animation if we want to
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        dying = false;   
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     abstract protected void Move();
@@ -26,13 +26,18 @@ abstract public class BaseEnemy : MonoBehaviour
         health -= damage;
         if (health <= 0)
         {
-
+            dying = true;
         }
     }
 
+    public bool isDying()
+    {
+        return dying;
+    }
+    
     /// <summary>
     /// Checks collision
     /// </summary>
     /// <param name="collision">The colliding object, plus other info</param>
-    abstract protected void OnCollisionEnter(Collision collision);
+    abstract public void GetHit(float damage);
 }
