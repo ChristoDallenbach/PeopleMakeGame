@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class NormalEnemy : BaseEnemy
 {
-    // [SerializeField] private float health, damage, moveSpeed;
-    // public Vector3 direction;
-
-
     // Start is called before the first frame update
     void Start()
     {

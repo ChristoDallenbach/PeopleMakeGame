@@ -28,6 +28,8 @@ public class GameController : MonoBehaviour
 
         lastEnemy = 3.0f;
 
+        //static var direction = Camera.main.transform.forward;
+
 
         StartCoroutine(IncreaseSpawnRate());
     }
@@ -118,7 +120,7 @@ public class GameController : MonoBehaviour
         while (spawnRate > 0.5f)
         {
             yield return new WaitForSeconds(1);
-            spawnRate -= 0.1f;
+            spawnRate -= 0.05f;
         }
     }
 }
