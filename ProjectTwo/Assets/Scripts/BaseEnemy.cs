@@ -4,7 +4,8 @@ using UnityEngine;
 
 abstract public class BaseEnemy : MonoBehaviour
 {
-    [SerializeField] protected float health, damage, moveSpeed, scoreValue;
+    [SerializeField] protected float health, damage, moveSpeed;
+    [SerializeField] protected int scoreValue;
     protected Vector3 direction;
     protected bool dying;//Allows us to implement a death animation if we want to
 
@@ -38,6 +39,11 @@ abstract public class BaseEnemy : MonoBehaviour
     public float Damage()
     {
         return damage;
+    }
+    
+    public int ScoreValue()
+    {
+        return scoreValue;
     }
     
     /// <summary>

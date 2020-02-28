@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
     private PlayerScript playerScript; //Replace Transform with playerscript once it's been created;
     private List<GameObject> enemyList;
 
-    private float score;
+    private int score;
     private float lastEnemy;
     [Tooltip("Float between 0 and 1")]
     [SerializeField] private float enemySpawnChance;
@@ -44,6 +44,8 @@ public class GameController : MonoBehaviour
             for (int i = 0; i < enemyList.Count; i++){
                 if (enemyList[i].GetComponent<BaseEnemy>().isDying())
                 {
+                    InceaseScore(enemyList[i].GetComponent<BaseEnemy>().ScoreValue());
+                    Debug.Log(score);
                     enemyList.RemoveAt(i);
                 }
             }
@@ -123,5 +125,12 @@ public class GameController : MonoBehaviour
             spawnRate -= 0.05f;
         }
     }
+
+    /// <summary>
+    /// increase the score of the player
+    /// </summary>
+    /// <param name="scoreToAdd">score to add</param>
+    public void InceaseScore(int scoreToAdd) { score += scoreToAdd; }
+
 }
 

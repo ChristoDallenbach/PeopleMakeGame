@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerScript : MonoBehaviour
 {
     private float health;
-    private int score;
     [SerializeField] private float damage;
 
     //shooting
@@ -17,7 +16,6 @@ public class PlayerScript : MonoBehaviour
     void Start()
     {
         health = 100.0f;
-        score = 0;
 
         shootDirection = Input.mousePosition;
     }
@@ -51,13 +49,6 @@ public class PlayerScript : MonoBehaviour
             hit.transform.gameObject.GetComponent<BaseEnemy>().GetHit(damage);
         }
     }
-
-    // getter of the score so it can be displayed on the ui
-    public int GetScore() { return score; }
-
-    // increase the score of the player
-    // parameter is the score to add
-    public void InceaseScore(int scoreToAdd) { score += scoreToAdd; }
 
     // checks if the player is dead 
     public void CheckHealth()
