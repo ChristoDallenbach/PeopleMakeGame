@@ -16,6 +16,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private float enemySpawnChance;
     [SerializeField] private float spawnRate;
     [SerializeField] private GameObject enemy;
+    [SerializeField] private GameObject indicator;
 
     // Start is called before the first frame update
     void Start()
@@ -60,7 +61,7 @@ public class GameController : MonoBehaviour
         if (lastEnemy > spawnRate){//Checks if the time between enemy spawns is larger than the rate enemies should be spawning
             if (enemySpawnChance < Random.value) //Add a little randomness to the spawning, to make it feel more natural
             {
-                enemyList.Add(GameObject.Instantiate(enemy));
+                enemyList.Add(GameObject.Instantiate(enemy, new Vector3(int.MaxValue, int.MaxValue, int.MaxValue), Quaternion.Euler(0,0,0)));//instantiates the object far away.  Will be moved later
                 lastEnemy = 0.0f;
             }
         }
@@ -101,8 +102,13 @@ public class GameController : MonoBehaviour
 
             // setting which enemy is closest to the player
             closestEnemy = enemyList[smallestIndex];
-        }else if(enemyList.Count == 1){//If there's exactly 1 enemy, it's the closest by default
+            indicator.transform.LookAt(closestEnemy.transform.position);
+            indicator.transform.Rotate(new Vector3(90,0,0));
+        }
+        else if(enemyList.Count == 1){//If there's exactly 1 enemy, it's the closest by default
             closestEnemy = enemyList[0];
+            indicator.transform.LookAt(closestEnemy.transform.position);
+            indicator.transform.Rotate(new Vector3(90, 0, 0));
         }
     }
 
