@@ -10,12 +10,14 @@ abstract public class BaseEnemy : MonoBehaviour
     protected bool dying;//Allows us to implement a death animation if we want to
 
     // Start is called before the first frame update
-    void Start()
+    virtual protected void Start()
     {
+        Vector3 temp = Random.insideUnitCircle.normalized * 10;
+        transform.position = Camera.main.transform.position + new Vector3(temp.x, 0, Mathf.Abs(temp.y));//sets position to a random spot near the camera
         dying = false;   
     }
 
-    // Update is called once per frame
+    // Update is called once per frame  
     void Update()
     {
         
@@ -50,5 +52,5 @@ abstract public class BaseEnemy : MonoBehaviour
     /// Checks collision
     /// </summary>
     /// <param name="collision">The colliding object, plus other info</param>
-    abstract public void GetHit(float damage);
+    abstract public void GetHit(float damage, TapType type);
 }

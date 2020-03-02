@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum TapType { 
+    shortTap,
+    longTap,
+    doubleTap //probably won't be used, but just in case
+}
+
 public class PlayerScript : MonoBehaviour
 {
     private float health;
@@ -10,6 +16,7 @@ public class PlayerScript : MonoBehaviour
     //shooting
     private Ray shotRay;
     private Vector3 shootDirection;
+    private float tapTime;
 
 
     // Start is called before the first frame update
@@ -23,39 +30,58 @@ public class PlayerScript : MonoBehaviour
     void Update() {
         foreach (Touch touch in Input.touches)
         {
+            //checks which kind of tap the player made
             if (touch.phase == TouchPhase.Began)
+            {
+                tapTime += Time.deltaTime;
+            }
+            else if (touch.phase == TouchPhase.Ended)
             {
                 shootDirection = touch.position;
                 shotRay = Camera.main.ScreenPointToRay(shootDirection);
-
-                ShootRay(shotRay);
+                TapType type;
+                if (tapTime > 1)
+                    type = TapType.longTap;
+                else
+                    type = TapType.shortTap;
+                ShootRay(shotRay, type);
+                tapTime = 0;
             }
         }
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
+        {
+            tapTime += Time.deltaTime;
+        }
+        else if (Input.GetMouseButtonUp(0))
         {
             shootDirection = Input.mousePosition;
             shotRay = Camera.main.ScreenPointToRay(shootDirection);
 
-            ShootRay(shotRay);
+            TapType type;
+            if (tapTime > 1)
+            {
+                type = TapType.longTap;
+                Debug.Log("Long");
+            }
+            else
+            {
+                type = TapType.shortTap;
+                Debug.Log("short");
+            }
+            ShootRay(shotRay, type);
+            tapTime = 0;
         }
     }
 
-    private void ShootRay(Ray shotRay)
+    private void ShootRay(Ray shotRay, TapType type)
     {
         Debug.DrawRay(shotRay.origin, shotRay.direction, Color.red, 5);
         RaycastHit hit;//Info on the object the ray hit
         if(Physics.Raycast(shotRay.origin, shotRay.direction, out hit))
         {
-            hit.transform.gameObject.GetComponent<BaseEnemy>().GetHit(damage);
+            hit.transform.gameObject.GetComponent<BaseEnemy>().GetHit(damage, type);
         }
     }
-
-    // getter of the score so it can be displayed on the ui
-    public int GetScore() { return score; }
-
-    // increase the score of the player
-    // parameter is the score to add
-    public void InceaseScore(int scoreToAdd) { score += scoreToAdd; }
 
     //// player checking collision with enemies
     //public List<GameObject> CheckCollision(List<GameObject> enemies)
@@ -81,9 +107,9 @@ public class PlayerScript : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        NormalEnemy normal = collision.transform.gameObject.GetComponent<NormalEnemy>();
+        BaseEnemy normal = collision.transform.gameObject.GetComponent<BaseEnemy>();
 
-        normal.GetHit(100);
+        normal.GetHit(1000.0f, TapType.longTap);
 
         health -= normal.Damage();
 
