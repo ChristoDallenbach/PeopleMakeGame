@@ -50,8 +50,48 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
+    // getter of the score so it can be displayed on the ui
+    public int GetScore() { return score; }
+
+    // increase the score of the player
+    // parameter is the score to add
+    public void InceaseScore(int scoreToAdd) { score += scoreToAdd; }
+
+    //// player checking collision with enemies
+    //public List<GameObject> CheckCollision(List<GameObject> enemies)
+    //{
+    //    int length = enemies.Count;
+    //    // loop through the enemies to check if there is collision with the player 
+    //    for(int i = length-1; i >= 0; i--)
+    //    {
+    //        // if it is colliding take damage based of the enemies damage
+    //        if (true)
+    //        {
+    //
+    //            // destroy the enemy
+    //            enemies
+    //
+    //            // if it did take damage check if the player is now dead
+    //            CheckHealth();
+    //        }
+    //    }
+    //
+    //    return enemies;
+    //}
+
+    void OnCollisionEnter(Collision collision)
+    {
+        NormalEnemy normal = collision.transform.gameObject.GetComponent<NormalEnemy>();
+
+        normal.GetHit(100);
+
+        health -= normal.Damage();
+
+        CheckHealth();
+    }
+
     // checks if the player is dead 
-    public void CheckHealth()
+    private void CheckHealth()
     {
         if(health <= 0.0f)
         {
