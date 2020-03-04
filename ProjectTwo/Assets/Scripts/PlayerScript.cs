@@ -58,16 +58,10 @@ public class PlayerScript : MonoBehaviour
             shotRay = Camera.main.ScreenPointToRay(shootDirection);
 
             TapType type;
-            if (tapTime > 1)
-            {
+            if (tapTime > 0.25f)
                 type = TapType.longTap;
-                Debug.Log("Long");
-            }
             else
-            {
                 type = TapType.shortTap;
-                Debug.Log("short");
-            }
             ShootRay(shotRay, type);
             tapTime = 0;
         }
