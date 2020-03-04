@@ -386,7 +386,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemySpawnChance: 0.05
   spawnRate: 3
-  enemy: {fileID: 745519604801161518, guid: 72ce17eaff6c6f34f9c5b394482ed467, type: 3}
+  baseEnemy: {fileID: 745519604801161518, guid: 72ce17eaff6c6f34f9c5b394482ed467,
+    type: 3}
+  specialEnemy1: {fileID: 4111676239509206188, guid: 4392299aace328b478210447ec2953f1,
+    type: 3}
   indicator: {fileID: 264861194}
 --- !u!4 &1601097426
 Transform:

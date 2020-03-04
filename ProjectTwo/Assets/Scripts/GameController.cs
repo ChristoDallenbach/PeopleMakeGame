@@ -40,7 +40,14 @@ public class GameController : MonoBehaviour
             //if the game is not paused?
             GenerateEnemies();//Code to check if new enemies need to be generated, or if the closest enemy needs to be changed
             for (int i = 0; i < enemyList.Count; i++){
-                if (enemyList[i].GetComponent<BaseEnemy>().isDying())
+                if (enemyList[i].GetComponent<BaseEnemy>().isColliding())
+                {
+                    Debug.Log(score);
+
+                    Destroy(enemyList[i].gameObject, 0.1f);
+                    enemyList.RemoveAt(i);
+                }
+                else if (enemyList[i].GetComponent<BaseEnemy>().isDying())
                 {
                     InceaseScore(enemyList[i].GetComponent<BaseEnemy>().ScoreValue());
                     Debug.Log(score);

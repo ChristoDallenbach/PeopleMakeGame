@@ -58,6 +58,12 @@ abstract public class BaseEnemy : MonoBehaviour
 
     public void DestroyOnColl()
     {
-        collisionDeath = false;
+        collisionDeath = true;
     }
+
+    public bool isColliding()
+    {
+        return collisionDeath;
+    }
+
 }
