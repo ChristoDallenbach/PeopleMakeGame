@@ -15,7 +15,8 @@ public class GameController : MonoBehaviour
     [Tooltip("Float between 0 and 1")]
     [SerializeField] private float enemySpawnChance;
     [SerializeField] private float spawnRate;
-    [SerializeField] private GameObject enemy;
+    [SerializeField] private GameObject baseEnemy;
+    [SerializeField] private GameObject specialEnemy1;
     [SerializeField] private GameObject indicator;
 
     // Start is called before the first frame update
@@ -62,8 +63,14 @@ public class GameController : MonoBehaviour
         if (lastEnemy > spawnRate){//Checks if the time between enemy spawns is larger than the rate enemies should be spawning
             if (enemySpawnChance < Random.value) //Add a little randomness to the spawning, to make it feel more natural
             {
-                enemyList.Add(GameObject.Instantiate(enemy, new Vector3(int.MaxValue, int.MaxValue, int.MaxValue), Quaternion.Euler(0,0,0)));//instantiates the object far away.  Will be moved later
-                lastEnemy = 0.0f;
+                if (Random.value > 0.7f){
+                    enemyList.Add(GameObject.Instantiate(baseEnemy, new Vector3(int.MaxValue, int.MaxValue, int.MaxValue), Quaternion.Euler(0, 0, 0)));//instantiates the object far away.  Will be moved later
+                    lastEnemy = 0.0f;
+                }
+                else{
+                    enemyList.Add(GameObject.Instantiate(specialEnemy1, new Vector3(int.MaxValue, int.MaxValue, int.MaxValue), Quaternion.Euler(0, 0, 0)));//instantiates the object far away.  Will be moved later
+                    lastEnemy = 0.0f;
+                }
             }
         }
         lastEnemy += Time.deltaTime;

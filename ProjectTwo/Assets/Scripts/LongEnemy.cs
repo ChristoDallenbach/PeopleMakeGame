@@ -45,7 +45,6 @@ public class LongEnemy : BaseEnemy
         }
         else if (type == TapType.longTap)
             base.TakeDamage(this.damage);
-        else
-            base.TakeDamage(this.damage);//Default that should never be hit
+
     }
 }
