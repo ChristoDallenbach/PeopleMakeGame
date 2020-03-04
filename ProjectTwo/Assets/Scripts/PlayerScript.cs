@@ -105,9 +105,9 @@ public class PlayerScript : MonoBehaviour
     //    return enemies;
     //}
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider collider)
     {
-        BaseEnemy normal = collision.transform.gameObject.GetComponent<BaseEnemy>();
+        BaseEnemy normal = collider.transform.gameObject.GetComponent<BaseEnemy>();
 
         normal.GetHit(1000.0f, TapType.longTap);
 
