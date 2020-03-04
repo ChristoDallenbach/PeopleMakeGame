@@ -109,7 +109,7 @@ public class PlayerScript : MonoBehaviour
     {
         BaseEnemy normal = collider.transform.gameObject.GetComponent<BaseEnemy>();
 
-        normal.GetHit(1000.0f, TapType.longTap);
+        normal.DestroyOnColl();
 
         health -= normal.Damage();
 

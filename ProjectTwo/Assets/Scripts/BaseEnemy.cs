@@ -8,13 +8,15 @@ abstract public class BaseEnemy : MonoBehaviour
     [SerializeField] protected int scoreValue;
     protected Vector3 direction;
     protected bool dying;//Allows us to implement a death animation if we want to
+    protected bool collisionDeath;
 
     // Start is called before the first frame update
     virtual protected void Start()
     {
         Vector3 temp = Random.insideUnitCircle.normalized * 10;
         transform.position = Camera.main.transform.position + new Vector3(temp.x, 0, Mathf.Abs(temp.y));//sets position to a random spot near the camera
-        dying = false;   
+        dying = false;
+        collisionDeath = false;
     }
 
     // Update is called once per frame  
@@ -53,4 +55,9 @@ abstract public class BaseEnemy : MonoBehaviour
     /// </summary>
     /// <param name="collision">The colliding object, plus other info</param>
     abstract public void GetHit(float damage, TapType type);
+
+    public void DestroyOnColl()
+    {
+        collisionDeath = false;
+    }
 }
