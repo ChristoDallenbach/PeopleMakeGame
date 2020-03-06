@@ -43,16 +43,12 @@ public class GameController : MonoBehaviour
             for (int i = 0; i < enemyList.Count; i++){
                 if (enemyList[i].GetComponent<BaseEnemy>().isColliding())
                 {
-                    Debug.Log(score);
-
                     Destroy(enemyList[i].gameObject, 0.1f);
                     enemyList.RemoveAt(i);
                 }
                 else if (enemyList[i].GetComponent<BaseEnemy>().isDying())
                 {
                     InceaseScore(enemyList[i].GetComponent<BaseEnemy>().ScoreValue());
-                    Debug.Log(score);
-
                     GameObject.Find("scoreText").GetComponent<Text>().text = "Score: " + score;
 
                     enemyList.RemoveAt(i);
@@ -145,7 +141,7 @@ public class GameController : MonoBehaviour
         while (spawnRate > 0.75f)
         {
             yield return new WaitForSeconds(1);
-            spawnRate -= 0.025f;
+            spawnRate -= 0.001f;
         }
     }
 

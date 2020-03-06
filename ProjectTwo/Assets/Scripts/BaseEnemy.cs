@@ -13,11 +13,13 @@ abstract public class BaseEnemy : MonoBehaviour
     // Start is called before the first frame update
     virtual protected void Start()
     {
-        Vector3 temp = Random.insideUnitSphere.normalized * 17.5f;
-        transform.position = Camera.main.transform.position + new Vector3(temp.x, Mathf.Abs(temp.y/5), Mathf.Abs(temp.z));//sets position to a random spot near the camera
+        Vector3 destination = Random.insideUnitSphere.normalized;
+        Vector3 pos = new Vector3(destination.x, Mathf.Abs(destination.y/5), Mathf.Abs(destination.z)).normalized *17.5f;
+        transform.position = Camera.main.transform.position + pos;//sets position to a random spot near the camera
         transform.LookAt(Camera.main.transform);
         dying = false;
         collisionDeath = false;
+        Vector3 distance = Camera.main.transform.position - transform.position;
     }
 
     // Update is called once per frame  

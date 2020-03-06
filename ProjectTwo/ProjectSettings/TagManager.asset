@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ManipulationSystem
   - Enemy
+  - Light
   layers:
   - Default
   - TransparentFX

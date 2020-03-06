@@ -8,7 +8,7 @@ public class SpawnEnemy : BaseEnemy
     [SerializeField] private float spawnRate;
     private float spawnTime;
     private float spawnAngle;
-    public List<GameObject> enemyList;
+    public List<GameObject> enemyList;//The list of all enemies.  This is passed into the script on creation by the game controller
 
 
     // Start is called before the first frame update
