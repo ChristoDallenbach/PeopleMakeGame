@@ -8,7 +8,8 @@ public class SpawnEnemy : BaseEnemy
     [SerializeField] private float spawnRate;
     private float spawnTime;
     private float spawnAngle;
-    
+    public List<GameObject> enemyList;
+
 
     // Start is called before the first frame update
     void Start()
@@ -51,6 +52,7 @@ public class SpawnEnemy : BaseEnemy
             temp.transform.LookAt(Camera.main.transform);
             spawnAngle += 20;
             spawnTime = 0;
+            enemyList.Add(temp);
         }
         else
             spawnTime += Time.deltaTime;

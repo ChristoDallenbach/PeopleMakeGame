@@ -78,6 +78,12 @@ public class GameController : MonoBehaviour
                 else{
                     int enemy = Random.Range(0, specialEnemyList.Length);
                     enemyList.Add(GameObject.Instantiate(specialEnemyList[enemy], new Vector3(indicator.transform.up.x, indicator.transform.up.y, indicator.transform.up.z)*100, Quaternion.Euler(0, 0, 0)));//instantiates the object far away.  Will be moved later
+                    SpawnEnemy enemySpawn;
+                    if (enemyList[enemyList.Count - 1].TryGetComponent<SpawnEnemy>(out enemySpawn))//checks if selected enemy is a spawner
+                    {
+                        //if so, give them a reference to the enemy list so they can add their enemies into the list
+                        enemySpawn.enemyList = enemyList;
+                    }
                     lastEnemy = 0.0f;
                 }
             }

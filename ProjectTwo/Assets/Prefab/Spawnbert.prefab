@@ -109,5 +109,5 @@ MonoBehaviour:
   damage: 10
   moveSpeed: 0
   scoreValue: 50
-  spawn: {fileID: 7285596220685144315, guid: 63bcb83c905b583418dbfc0190616eef, type: 3}
+  spawn: {fileID: 505912582482255169, guid: dea529629409f244d95ba6ef027a2bee, type: 3}
   spawnRate: 0.3
