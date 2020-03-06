@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NormalEnemy : BaseEnemy
+public class LongEnemy : BaseEnemy
 {
     // Start is called before the first frame update
     void Start()
@@ -32,11 +32,20 @@ public class NormalEnemy : BaseEnemy
     }
 
     /// <summary>
-    /// Checks collision.  This enemy doesn't care what kind of tap hits it, so type is ignored
+    /// Checks collision
     /// </summary>
     /// <param name="collision">The colliding object, plus other info</param>
     public override void GetHit(float damage, TapType type)
     {
-        base.TakeDamage(this.damage);
+        if (type == TapType.shortTap)
+        {
+            Vector3 temp = Random.insideUnitCircle.normalized * 3;
+            Vector3 position = Camera.main.transform.position + new Vector3(temp.x, 0, Mathf.Abs(temp.y));//sets position to a random spot near the original object
+            GameObject.Instantiate(gameObject, position, Quaternion.identity).transform.LookAt(Camera.main.transform);
+        }
+        else if (type == TapType.longTap)
+            base.TakeDamage(this.damage);
+        else
+            base.TakeDamage(this.damage);//Default that should never be hit
     }
 }

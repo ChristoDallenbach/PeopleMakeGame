@@ -4,20 +4,23 @@ using UnityEngine;
 
 abstract public class BaseEnemy : MonoBehaviour
 {
-    [SerializeField] private float health, damage, moveSpeed;
-    public Vector3 direction;
-
+    [SerializeField] protected float health, damage, moveSpeed;
+    [SerializeField] protected int scoreValue;
+    protected Vector3 direction;
+    protected bool dying;//Allows us to implement a death animation if we want to
 
     // Start is called before the first frame update
-    void Start()
+    virtual protected void Start()
     {
-        
+        Vector3 temp = Random.insideUnitCircle.normalized * 10;
+        transform.position = Camera.main.transform.position + new Vector3(temp.x, 0, Mathf.Abs(temp.y));//sets position to a random spot near the camera
+        dying = false;   
     }
 
-    // Update is called once per frame
+    // Update is called once per frame  
     void Update()
     {
-
+        
     }
 
     abstract protected void Move();
@@ -26,13 +29,28 @@ abstract public class BaseEnemy : MonoBehaviour
         health -= damage;
         if (health <= 0)
         {
-
+            dying = true;
         }
     }
 
+    public bool isDying()
+    {
+        return dying;
+    }
+
+    public float Damage()
+    {
+        return damage;
+    }
+    
+    public int ScoreValue()
+    {
+        return scoreValue;
+    }
+    
     /// <summary>
     /// Checks collision
     /// </summary>
     /// <param name="collision">The colliding object, plus other info</param>
-    abstract protected void OnCollisionEnter(Collision collision);
+    abstract public void GetHit(float damage, TapType type);
 }
