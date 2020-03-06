@@ -108,4 +108,4 @@ MonoBehaviour:
   health: 10
   damage: 10
   moveSpeed: 1
-  scoreValue: 10
+  scoreValue: 20
