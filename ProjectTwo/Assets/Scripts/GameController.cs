@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour
     private GameObject player;
     private PlayerScript playerScript; //Replace Transform with playerscript once it's been created;
     private List<GameObject> enemyList;
+    private Text scoreText;
 
     public static int score;
     private float lastEnemy;
@@ -27,7 +28,8 @@ public class GameController : MonoBehaviour
         playerScript = player.GetComponent<PlayerScript>();
         enemyList = new List<GameObject>();
         score = 0;
-        GameObject.Find("scoreText").GetComponent<Text>().text = "Score: " + score;
+        scoreText = GameObject.Find("scoreText").GetComponent<Text>();
+        scoreText.text = "Score: " + score;
         lastEnemy = 3.0f;
 
         StartCoroutine(IncreaseSpawnRate());
@@ -49,7 +51,7 @@ public class GameController : MonoBehaviour
                 else if (enemyList[i].GetComponent<BaseEnemy>().isDying())
                 {
                     InceaseScore(enemyList[i].GetComponent<BaseEnemy>().ScoreValue());
-                    GameObject.Find("scoreText").GetComponent<Text>().text = "Score: " + score;
+                    scoreText.text = "Score: " + score;
 
                     enemyList.RemoveAt(i);
                 }
