@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class GameController : MonoBehaviour
     private PlayerScript playerScript; //Replace Transform with playerscript once it's been created;
     private List<GameObject> enemyList;
 
-    private int score;
+    public static int score;
     private float lastEnemy;
     [Tooltip("Float between 0 and 1")]
     [SerializeField] private float enemySpawnChance;
@@ -26,7 +27,7 @@ public class GameController : MonoBehaviour
         playerScript = player.GetComponent<PlayerScript>();
         enemyList = new List<GameObject>();
         score = 0;
-
+        GameObject.Find("scoreText").GetComponent<Text>().text = "Score: " + score;
         lastEnemy = 3.0f;
 
         StartCoroutine(IncreaseSpawnRate());
@@ -51,6 +52,9 @@ public class GameController : MonoBehaviour
                 {
                     InceaseScore(enemyList[i].GetComponent<BaseEnemy>().ScoreValue());
                     Debug.Log(score);
+
+                    GameObject.Find("scoreText").GetComponent<Text>().text = "Score: " + score;
+
                     enemyList.RemoveAt(i);
                 }
             }
