@@ -19,7 +19,8 @@ public class PlayerScript : MonoBehaviour
     private Vector3 shootDirection;
     private float tapTime;
 
-    private Text healthText; 
+    private Text healthText;
+    private GameObject gameController;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +29,8 @@ public class PlayerScript : MonoBehaviour
 
         healthText = GameObject.Find("healthText").GetComponent<Text>();
         healthText.text = "Money Left: $" + health;
+
+        gameController = GameObject.Find("GameController");
 
         shootDirection = Input.mousePosition;
     }
@@ -130,6 +133,6 @@ public class PlayerScript : MonoBehaviour
     private void Die()
     {
         // go to the game over scene or just destroy player & pause scene w/ restart button
-
+        gameController.GetComponent<ChangeScene>().changeMenu("MainMenu");
     }
 }
