@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -9,13 +10,16 @@ public class GameController : MonoBehaviour
     private GameObject player;
     private PlayerScript playerScript; //Replace Transform with playerscript once it's been created;
     private List<GameObject> enemyList;
+    private Text scoreText;
+    private Text healthText;
 
-    private int score;
+    public static int score;
     private float lastEnemy;
     [Tooltip("Float between 0 and 1")]
     [SerializeField] private float enemySpawnChance;
     [SerializeField] private float spawnRate;
-    [SerializeField] private GameObject enemy;
+    [SerializeField] private GameObject baseEnemy;
+    [SerializeField] private GameObject[] specialEnemyList;
     [SerializeField] private GameObject indicator;
 
     // Start is called before the first frame update
@@ -25,7 +29,8 @@ public class GameController : MonoBehaviour
         playerScript = player.GetComponent<PlayerScript>();
         enemyList = new List<GameObject>();
         score = 0;
-
+        scoreText = GameObject.Find("scoreText").GetComponent<Text>(); //.text = "Score: " + score;
+        scoreText.text = "Score: " + score;
         lastEnemy = 3.0f;
 
         StartCoroutine(IncreaseSpawnRate());
@@ -39,10 +44,16 @@ public class GameController : MonoBehaviour
             //if the game is not paused?
             GenerateEnemies();//Code to check if new enemies need to be generated, or if the closest enemy needs to be changed
             for (int i = 0; i < enemyList.Count; i++){
-                if (enemyList[i].GetComponent<BaseEnemy>().isDying())
+                if (enemyList[i].GetComponent<BaseEnemy>().isColliding())
+                {
+                    Destroy(enemyList[i].gameObject, 0.1f);
+                    enemyList.RemoveAt(i);
+                }
+                else if (enemyList[i].GetComponent<BaseEnemy>().isDying())
                 {
                     InceaseScore(enemyList[i].GetComponent<BaseEnemy>().ScoreValue());
-                    Debug.Log(score);
+                    scoreText.text = "Score: " + score;
+
                     enemyList.RemoveAt(i);
                 }
             }
@@ -50,6 +61,7 @@ public class GameController : MonoBehaviour
             // calling find closest enemy at the end of each frame
             FindClosestEnemy();
         }
+        Debug.DrawRay(indicator.transform.position, indicator.transform.up, Color.red);
     }
 
     bool CheckPause()
@@ -62,8 +74,21 @@ public class GameController : MonoBehaviour
         if (lastEnemy > spawnRate){//Checks if the time between enemy spawns is larger than the rate enemies should be spawning
             if (enemySpawnChance < Random.value) //Add a little randomness to the spawning, to make it feel more natural
             {
-                enemyList.Add(GameObject.Instantiate(enemy, new Vector3(int.MaxValue, int.MaxValue, int.MaxValue), Quaternion.Euler(0,0,0)));//instantiates the object far away.  Will be moved later
-                lastEnemy = 0.0f;
+                if (Random.value < 0.7f){
+                    enemyList.Add(GameObject.Instantiate(baseEnemy, new Vector3(indicator.transform.up.x, indicator.transform.up.y, indicator.transform.up.z) * 100, Quaternion.Euler(0, 0, 0)));//instantiates the object far away.  Will be moved later
+                    lastEnemy = 0.0f;
+                }
+                else{
+                    int enemy = Random.Range(0, specialEnemyList.Length);
+                    enemyList.Add(GameObject.Instantiate(specialEnemyList[enemy], new Vector3(indicator.transform.up.x, indicator.transform.up.y, indicator.transform.up.z)*100, Quaternion.Euler(0, 0, 0)));//instantiates the object far away.  Will be moved later
+                    SpawnEnemy enemySpawn;
+                    if (enemyList[enemyList.Count - 1].TryGetComponent<SpawnEnemy>(out enemySpawn))//checks if selected enemy is a spawner
+                    {
+                        //if so, give them a reference to the enemy list so they can add their enemies into the list
+                        enemySpawn.enemyList = enemyList;
+                    }
+                    lastEnemy = 0.0f;
+                }
             }
         }
         lastEnemy += Time.deltaTime;
@@ -116,10 +141,10 @@ public class GameController : MonoBehaviour
     private IEnumerator IncreaseSpawnRate()
     {
         //Every second, enemies start spawning 1/10th of a second quicker
-        while (spawnRate > 0.5f)
+        while (spawnRate > 0.75f)
         {
             yield return new WaitForSeconds(1);
-            spawnRate -= 0.05f;
+            spawnRate -= 0.001f;
         }
     }
 

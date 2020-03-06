@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum TapType { 
     shortTap,
@@ -10,7 +11,7 @@ public enum TapType {
 
 public class PlayerScript : MonoBehaviour
 {
-    private float health;
+    public float health;
     [SerializeField] private float damage;
 
     //shooting
@@ -18,11 +19,15 @@ public class PlayerScript : MonoBehaviour
     private Vector3 shootDirection;
     private float tapTime;
 
+    private Text healthText;
 
     // Start is called before the first frame update
     void Start()
     {
         health = 100.0f;
+
+        healthText = GameObject.Find("healthText").GetComponent<Text>();
+        healthText.text = "Money Left: $" + health;
 
         shootDirection = Input.mousePosition;
     }
@@ -58,16 +63,10 @@ public class PlayerScript : MonoBehaviour
             shotRay = Camera.main.ScreenPointToRay(shootDirection);
 
             TapType type;
-            if (tapTime > 1)
-            {
+            if (tapTime > 0.25f)
                 type = TapType.longTap;
-                Debug.Log("Long");
-            }
             else
-            {
                 type = TapType.shortTap;
-                Debug.Log("short");
-            }
             ShootRay(shotRay, type);
             tapTime = 0;
         }
@@ -105,13 +104,15 @@ public class PlayerScript : MonoBehaviour
     //    return enemies;
     //}
 
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider collider)
     {
-        BaseEnemy normal = collision.transform.gameObject.GetComponent<BaseEnemy>();
+        BaseEnemy normal = collider.transform.gameObject.GetComponent<BaseEnemy>();
 
-        normal.GetHit(1000.0f, TapType.longTap);
+        normal.DestroyOnColl();
 
         health -= normal.Damage();
+
+        healthText.text = "Money Left: $" + health;
 
         CheckHealth();
     }
