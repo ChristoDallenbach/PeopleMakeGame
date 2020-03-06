@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum TapType { 
     shortTap,
@@ -10,7 +11,7 @@ public enum TapType {
 
 public class PlayerScript : MonoBehaviour
 {
-    private float health;
+    public float health;
     [SerializeField] private float damage;
 
     //shooting
@@ -18,11 +19,15 @@ public class PlayerScript : MonoBehaviour
     private Vector3 shootDirection;
     private float tapTime;
 
+    private Text healthText;
 
     // Start is called before the first frame update
     void Start()
     {
         health = 100.0f;
+
+        healthText = GameObject.Find("healthText").GetComponent<Text>();
+        healthText.text = "Money Left: $" + health;
 
         shootDirection = Input.mousePosition;
     }
@@ -106,6 +111,8 @@ public class PlayerScript : MonoBehaviour
         normal.DestroyOnColl();
 
         health -= normal.Damage();
+
+        healthText.text = "Money Left: $" + health;
 
         CheckHealth();
     }
