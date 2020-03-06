@@ -2,17 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LongEnemy : BaseEnemy
+public class FastEnemy : BaseEnemy
 {
-
-    public bool isClone = false;
     // Start is called before the first frame update
     void Start()
     {
-        if (!isClone)
-        {
-            base.Start();
-        }
+
     }
 
     // Update is called once per frame
@@ -37,21 +32,11 @@ public class LongEnemy : BaseEnemy
     }
 
     /// <summary>
-    /// Checks collision
+    /// Checks collision.  This enemy doesn't care what kind of tap hits it, so type is ignored
     /// </summary>
     /// <param name="collision">The colliding object, plus other info</param>
     public override void GetHit(float damage, TapType type)
     {
-        if (type == TapType.shortTap)
-        {
-            Vector3 temp = Random.insideUnitCircle.normalized;
-            Vector3 position = transform.position + new Vector3(temp.x*3, temp.y, 0);//sets position to a random spot near the original object
-            GameObject tempObject = GameObject.Instantiate(gameObject, position, Quaternion.identity);
-            tempObject.GetComponent<LongEnemy>().isClone = true;
-            tempObject.transform.LookAt(Camera.main.transform);
-        }
-        else if (type == TapType.longTap)
-            base.TakeDamage(this.damage);
-
+        base.TakeDamage(this.damage);
     }
 }

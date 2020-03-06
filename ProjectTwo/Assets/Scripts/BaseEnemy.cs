@@ -13,8 +13,9 @@ abstract public class BaseEnemy : MonoBehaviour
     // Start is called before the first frame update
     virtual protected void Start()
     {
-        Vector3 temp = Random.insideUnitCircle.normalized * 10;
-        transform.position = Camera.main.transform.position + new Vector3(temp.x, 0, Mathf.Abs(temp.y));//sets position to a random spot near the camera
+        Vector3 temp = Random.insideUnitSphere.normalized * 17.5f;
+        transform.position = Camera.main.transform.position + new Vector3(temp.x, Mathf.Abs(temp.y/5), Mathf.Abs(temp.z));//sets position to a random spot near the camera
+        transform.LookAt(Camera.main.transform);
         dying = false;
         collisionDeath = false;
     }
