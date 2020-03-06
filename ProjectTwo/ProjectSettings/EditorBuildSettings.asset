@@ -8,10 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/AstersScene.unity
     guid: 115e1e78530997e4f81b47b76a021f5d
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/MainScene.unity
     guid: 221b53cd4657c4c4199ce0c188bcc685
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/StevenScene.unity
     guid: 6c843e8a4bbaa1c4e8edf3b33ffbdeeb
   m_configObjects: {}

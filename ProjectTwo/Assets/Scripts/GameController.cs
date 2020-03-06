@@ -16,7 +16,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private float enemySpawnChance;
     [SerializeField] private float spawnRate;
     [SerializeField] private GameObject baseEnemy;
-    [SerializeField] private GameObject specialEnemy1;
+    [SerializeField] private GameObject[] specialEnemyList;
     [SerializeField] private GameObject indicator;
 
     // Start is called before the first frame update
@@ -58,6 +58,7 @@ public class GameController : MonoBehaviour
             // calling find closest enemy at the end of each frame
             FindClosestEnemy();
         }
+        Debug.DrawRay(indicator.transform.position, indicator.transform.up, Color.red);
     }
 
     bool CheckPause()
@@ -70,12 +71,13 @@ public class GameController : MonoBehaviour
         if (lastEnemy > spawnRate){//Checks if the time between enemy spawns is larger than the rate enemies should be spawning
             if (enemySpawnChance < Random.value) //Add a little randomness to the spawning, to make it feel more natural
             {
-                if (Random.value > 0.7f){
-                    enemyList.Add(GameObject.Instantiate(baseEnemy, new Vector3(int.MaxValue, int.MaxValue, int.MaxValue), Quaternion.Euler(0, 0, 0)));//instantiates the object far away.  Will be moved later
+                if (Random.value < 0.7f){
+                    enemyList.Add(GameObject.Instantiate(baseEnemy, new Vector3(indicator.transform.up.x, indicator.transform.up.y, indicator.transform.up.z) * 100, Quaternion.Euler(0, 0, 0)));//instantiates the object far away.  Will be moved later
                     lastEnemy = 0.0f;
                 }
                 else{
-                    enemyList.Add(GameObject.Instantiate(specialEnemy1, new Vector3(int.MaxValue, int.MaxValue, int.MaxValue), Quaternion.Euler(0, 0, 0)));//instantiates the object far away.  Will be moved later
+                    int enemy = Random.Range(0, specialEnemyList.Length);
+                    enemyList.Add(GameObject.Instantiate(specialEnemyList[enemy], new Vector3(indicator.transform.up.x, indicator.transform.up.y, indicator.transform.up.z)*100, Quaternion.Euler(0, 0, 0)));//instantiates the object far away.  Will be moved later
                     lastEnemy = 0.0f;
                 }
             }
@@ -130,10 +132,10 @@ public class GameController : MonoBehaviour
     private IEnumerator IncreaseSpawnRate()
     {
         //Every second, enemies start spawning 1/10th of a second quicker
-        while (spawnRate > 0.5f)
+        while (spawnRate > 0.75f)
         {
             yield return new WaitForSeconds(1);
-            spawnRate -= 0.05f;
+            spawnRate -= 0.025f;
         }
     }
 

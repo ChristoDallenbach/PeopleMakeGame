@@ -133,6 +133,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2136122143}
     m_Modifications:
+    - target: {fileID: -5317702370254609480, guid: cbe21e439a8386148b972a5f922112ef,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: cbe21e439a8386148b972a5f922112ef,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -208,6 +213,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: indicator
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: cbe21e439a8386148b972a5f922112ef,
+        type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cbe21e439a8386148b972a5f922112ef, type: 3}
 --- !u!1001 &563467906
@@ -239,7 +249,7 @@ PrefabInstance:
     - target: {fileID: 5008842797999650971, guid: 9aa88374a0dc52543919cc96681e12e2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.32
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5008842797999650971, guid: 9aa88374a0dc52543919cc96681e12e2,
         type: 3}
@@ -249,7 +259,7 @@ PrefabInstance:
     - target: {fileID: 5008842797999650971, guid: 9aa88374a0dc52543919cc96681e12e2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.53
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5008842797999650971, guid: 9aa88374a0dc52543919cc96681e12e2,
         type: 3}
@@ -386,7 +396,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemySpawnChance: 0.05
   spawnRate: 3
-  enemy: {fileID: 745519604801161518, guid: 72ce17eaff6c6f34f9c5b394482ed467, type: 3}
+  baseEnemy: {fileID: 745519604801161518, guid: 72ce17eaff6c6f34f9c5b394482ed467,
+    type: 3}
+  specialEnemyList:
+  - {fileID: 4111676239509206188, guid: 4392299aace328b478210447ec2953f1, type: 3}
+  - {fileID: 7195994292219055388, guid: 38d9bed9a0a355a42bc19e16958de41d, type: 3}
   indicator: {fileID: 264861194}
 --- !u!4 &1601097426
 Transform:
