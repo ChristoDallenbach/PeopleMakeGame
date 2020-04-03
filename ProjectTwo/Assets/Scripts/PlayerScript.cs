@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum TapType { 
+public enum TapType {
     shortTap,
     longTap,
     doubleTap //probably won't be used, but just in case
@@ -89,7 +89,7 @@ public class PlayerScript : MonoBehaviour
     //public List<GameObject> CheckCollision(List<GameObject> enemies)
     //{
     //    int length = enemies.Count;
-    //    // loop through the enemies to check if there is collision with the player 
+    //    // loop through the enemies to check if there is collision with the player
     //    for(int i = length-1; i >= 0; i--)
     //    {
     //        // if it is colliding take damage based of the enemies damage
@@ -120,7 +120,7 @@ public class PlayerScript : MonoBehaviour
         CheckHealth();
     }
 
-    // checks if the player is dead 
+    // checks if the player is dead
     private void CheckHealth()
     {
         if(health <= 0.0f)

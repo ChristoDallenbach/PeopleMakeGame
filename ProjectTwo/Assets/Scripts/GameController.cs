@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour
     private PlayerScript playerScript; //Replace Transform with playerscript once it's been created;
     private List<GameObject> enemyList;
     private Text scoreText;
+    private Text waveText;
 
     public static int score;
     private float lastEnemy;
@@ -29,8 +30,20 @@ public class GameController : MonoBehaviour
         enemyList = new List<GameObject>();
         score = 0;
         scoreText = GameObject.Find("scoreText").GetComponent<Text>();
+        waveText = GameObject.Find("waveText").GetComponent<Text>();
+        if (Global.mode == GameMode.wave)
+            waveText.text = "Wave: " + wave;
+        else
+            GameObject.Destroy(waveText);
         scoreText.text = "Score: " + score;
         lastEnemy = 3.0f;
+
+        wave = 1;
+        currentWave = new List<GameObject>();
+        waveBuffer = 1.5f;
+        waveSpot = 0;
+        waveTime = 2.0f;
+        currentBuffer = 0;
 
         StartCoroutine(IncreaseSpawnRate());
     }
@@ -40,8 +53,16 @@ public class GameController : MonoBehaviour
     {
         if (!CheckPause())//See if the game's paused
         {
-            //if the game is not paused?
-            GenerateEnemies();//Code to check if new enemies need to be generated, or if the closest enemy needs to be changed
+            //Checks which type of spawn type we're using
+            if (Global.mode == GameMode.endless)
+                GenerateEndlessEnemies();
+            else if (Global.mode == GameMode.wave)
+            {
+                //Wave generation is typically called in WaveUpdate, but needs to be called once at the start of the game
+                if (currentWave.Count == 0 && wave == 1)
+                    GenerateWaveEnemies();
+                WaveUpdate();//Wave specific update
+            }
             for (int i = 0; i < enemyList.Count; i++){
                 if (enemyList[i].GetComponent<BaseEnemy>().isColliding())
                 {
@@ -68,7 +89,7 @@ public class GameController : MonoBehaviour
         return false;
     }
 
-    void GenerateEnemies()
+    void GenerateEndlessEnemies()
     {
         if (lastEnemy > spawnRate){//Checks if the time between enemy spawns is larger than the rate enemies should be spawning
             if (enemySpawnChance < Random.value) //Add a little randomness to the spawning, to make it feel more natural
@@ -77,13 +98,16 @@ public class GameController : MonoBehaviour
                     enemyList.Add(GameObject.Instantiate(baseEnemy, new Vector3(indicator.transform.up.x, indicator.transform.up.y, indicator.transform.up.z) * 100, Quaternion.Euler(0, 0, 0)));//instantiates the object far away.  Will be moved later
                     lastEnemy = 0.0f;
                 }
+                else if (Random.value < 0.9f){
+                    enemyList.Add(GameObject.Instantiate(specialEnemyList[0], new Vector3(indicator.transform.up.x, indicator.transform.up.y, indicator.transform.up.z)*100, Quaternion.Euler(0, 0, 0)));//instantiates the object far away.  Will be moved later
+                    lastEnemy = 0.0f;
+                }
                 else{
-                    int enemy = Random.Range(0, specialEnemyList.Length);
-                    enemyList.Add(GameObject.Instantiate(specialEnemyList[enemy], new Vector3(indicator.transform.up.x, indicator.transform.up.y, indicator.transform.up.z)*100, Quaternion.Euler(0, 0, 0)));//instantiates the object far away.  Will be moved later
+                    enemyList.Add(GameObject.Instantiate(specialEnemyList[1], new Vector3(indicator.transform.up.x, indicator.transform.up.y, indicator.transform.up.z) * 100, Quaternion.Euler(0, 0, 0)));//instantiates the object far away.  Will be moved later
                     SpawnEnemy enemySpawn;
-                    if (enemyList[enemyList.Count - 1].TryGetComponent<SpawnEnemy>(out enemySpawn))//checks if selected enemy is a spawner
+                    if (enemyList[enemyList.Count - 1].TryGetComponent<SpawnEnemy>(out enemySpawn))//Gets reference to the new enemy script
                     {
-                        //if so, give them a reference to the enemy list so they can add their enemies into the list
+                        //give them a reference to the enemy list so they can add their enemies into the list
                         enemySpawn.enemyList = enemyList;
                     }
                     lastEnemy = 0.0f;
@@ -93,13 +117,73 @@ public class GameController : MonoBehaviour
         lastEnemy += Time.deltaTime;
     }
 
+    //Wave spawn specific variables
+    private List<GameObject> currentWave;
+    private int wave;
+    private float waveTime;
+    private int waveSpot;
+    private float waveBuffer; //Time in between waves;
+    private float currentBuffer;
+    /// <summary>
+    /// Spawns enemies in waves.  Each wave has more enemies and a shorter time between enemy spawn
+    /// </summary>
+    private void GenerateWaveEnemies(){
+        //Simulate waves so that we have something for playtest, without me actually hand-crafting waves
+        int enemyCount = 5 + wave * 3;//adds 3 enemies into every wave, plus a base of 5
+
+        for (int i = 0; i < enemyCount; i++)
+        {
+            if (Random.value < 0.7f)
+            {
+                currentWave.Add(baseEnemy);
+            }
+            else if (Random.value < 0.9f)
+            {
+                currentWave.Add(specialEnemyList[0]);
+            }
+            else
+            {
+                currentWave.Add(specialEnemyList[1]);
+                SpawnEnemy enemySpawn;
+                if (currentWave[currentWave.Count - 1].TryGetComponent<SpawnEnemy>(out enemySpawn))
+                {
+                    enemySpawn.enemyList = enemyList;
+                }
+            }
+        }
+    }
+
+    private void WaveUpdate()
+    {
+        if (currentWave.Count > 0)
+        {
+            if (lastEnemy > waveTime)
+            {
+                currentWave.Add(GameObject.Instantiate(currentWave[waveSpot], new Vector3(indicator.transform.up.x, indicator.transform.up.y, indicator.transform.up.z) * 100, Quaternion.Euler(0, 0, 0)));//instantiates the object far away.  Will be moved later
+                waveSpot++;
+                lastEnemy = 0;
+            }
+        }
+        if (currentWave.Count == 0 && waveSpot == currentWave.Count - 1)//checks that the wave is done spawning, and that everything is dead
+        {
+            if (currentBuffer > waveBuffer)
+            {
+                GenerateWaveEnemies();
+                waveTime -= 0.05f; //and then makes enemies spawn slightly closer together
+                wave++;
+                waveText.text = "Wave: " + wave;
+            }
+            else currentBuffer += Time.deltaTime;
+        }
+    }
+
     private void PauseToggle(bool pause)
     {
         //if we're not paused
         //set to pause
         //stop everything
         // pull up pause menu
-        
+
         //if we are paused
         //we are now unpausing
         //resume everything
@@ -154,4 +238,3 @@ public class GameController : MonoBehaviour
     public void InceaseScore(int scoreToAdd) { score += scoreToAdd; }
 
 }
-
