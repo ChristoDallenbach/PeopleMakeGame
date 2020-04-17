@@ -38,11 +38,10 @@ public class GameController : MonoBehaviour
         scoreText.text = "Score: " + score;
         lastEnemy = 3.0f;
 
-        wave = 1;
+        wave = 0;
         currentWave = new List<GameObject>();
         waveBuffer = 1.5f;
-        waveSpot = 0;
-        waveTime = 2.0f;
+        waveTime = 1.5f;
         currentBuffer = 0;
 
         StartCoroutine(IncreaseSpawnRate());
@@ -59,7 +58,7 @@ public class GameController : MonoBehaviour
             else if (Global.mode == GameMode.wave)
             {
                 //Wave generation is typically called in WaveUpdate, but needs to be called once at the start of the game
-                if (currentWave.Count == 0 && wave == 1)
+                if (currentWave.Count == 0 && wave == 0)
                     GenerateWaveEnemies();
                 WaveUpdate();//Wave specific update
             }
@@ -121,7 +120,6 @@ public class GameController : MonoBehaviour
     private List<GameObject> currentWave;
     private int wave;
     private float waveTime;
-    private int waveSpot;
     private float waveBuffer; //Time in between waves;
     private float currentBuffer;
     /// <summary>
@@ -151,6 +149,9 @@ public class GameController : MonoBehaviour
                 }
             }
         }
+        waveTime -= 0.05f; //and then makes enemies spawn slightly closer together
+        wave++;
+        waveText.text = "Wave: " + wave;
     }
 
     private void WaveUpdate()
@@ -159,19 +160,17 @@ public class GameController : MonoBehaviour
         {
             if (lastEnemy > waveTime)
             {
-                currentWave.Add(GameObject.Instantiate(currentWave[waveSpot], new Vector3(indicator.transform.up.x, indicator.transform.up.y, indicator.transform.up.z) * 100, Quaternion.Euler(0, 0, 0)));//instantiates the object far away.  Will be moved later
-                waveSpot++;
+                enemyList.Add(GameObject.Instantiate(currentWave[0], new Vector3(indicator.transform.up.x, indicator.transform.up.y, indicator.transform.up.z) * 100, Quaternion.Euler(0, 0, 0)));//instantiates the object far away.  Will be moved later
                 lastEnemy = 0;
+                currentWave.RemoveAt(0);//Remove the entity once it's spawned in
             }
+            else lastEnemy += Time.deltaTime;
         }
-        if (currentWave.Count == 0 && waveSpot == currentWave.Count - 1)//checks that the wave is done spawning, and that everything is dead
+        if (currentWave.Count == 0 && enemyList.Count == 0)//checks that the wave is done spawning, and that everything is dead
         {
             if (currentBuffer > waveBuffer)
             {
                 GenerateWaveEnemies();
-                waveTime -= 0.05f; //and then makes enemies spawn slightly closer together
-                wave++;
-                waveText.text = "Wave: " + wave;
             }
             else currentBuffer += Time.deltaTime;
         }
