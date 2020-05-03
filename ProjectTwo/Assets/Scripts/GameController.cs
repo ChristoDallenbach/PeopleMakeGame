@@ -10,8 +10,8 @@ public class GameController : MonoBehaviour
     private GameObject player;
     private PlayerScript playerScript; //Replace Transform with playerscript once it's been created;
     private List<GameObject> enemyList;
-    private Text scoreText;
-    private Text waveText;
+    public Text scoreText;
+    public Text waveText;
 
     public static int score;
     private float lastEnemy;
@@ -30,8 +30,8 @@ public class GameController : MonoBehaviour
         playerScript = player.GetComponent<PlayerScript>();
         enemyList = new List<GameObject>();
         score = 0;
-        scoreText = GameObject.Find("scoreText").GetComponent<Text>();
-        waveText = GameObject.Find("waveText").GetComponent<Text>();
+        //scoreText = GameObject.Find("scoreText").GetComponent<Text>();
+        //waveText = GameObject.Find("waveText").GetComponent<Text>();
         if (Global.mode == GameMode.wave)
             waveText.text = "Wave: " + wave;
         else
@@ -198,18 +198,6 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void PauseToggle(bool pause)
-    {
-        //if we're not paused
-        //set to pause
-        //stop everything
-        // pull up pause menu
-
-        //if we are paused
-        //we are now unpausing
-        //resume everything
-        //close pause menu
-    }
 
     // method for finding the closest enemy
     public void FindClosestEnemy()

@@ -19,7 +19,7 @@ public class PlayerScript : MonoBehaviour
     private Vector3 shootDirection;
     private float tapTime;
 
-    private Text healthText;
+    public Text healthText;
     private GameObject gameController;
 
     // Start is called before the first frame update
@@ -27,7 +27,7 @@ public class PlayerScript : MonoBehaviour
     {
         health = 100.0f;
 
-        healthText = GameObject.Find("healthText").GetComponent<Text>();
+        //healthText = GameObject.Find("healthText").GetComponent<Text>();
         healthText.text = "Money Left: $" + health;
 
         gameController = GameObject.Find("GameController");
