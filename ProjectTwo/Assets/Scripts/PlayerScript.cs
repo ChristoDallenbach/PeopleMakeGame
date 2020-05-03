@@ -117,6 +117,14 @@ public class PlayerScript : MonoBehaviour
 
         healthText.text = "Money Left: $" + health;
 
+        //checks to see if the enemy is one that decreases the players score on hit
+        ThiefEnemy checkType;
+        if (collider.transform.gameObject.TryGetComponent<ThiefEnemy>(out checkType))
+        {
+            //Steal is a negative value, so we can just call IncreaseScore with it
+            gameController.GetComponent<GameController>().InceaseScore(checkType.Steal());
+        }
+
         CheckHealth();
     }
 

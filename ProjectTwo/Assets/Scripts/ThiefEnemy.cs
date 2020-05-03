@@ -4,10 +4,17 @@ using UnityEngine;
 
 public class ThiefEnemy : BaseEnemy
 {
+    private int steal;
+
+    public int Steal()
+    {
+        return steal;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
+        steal = -15;
         base.Start();
     }
 
@@ -30,5 +37,14 @@ public class ThiefEnemy : BaseEnemy
         direction = direction.normalized;
 
         transform.position = transform.position + direction * Time.deltaTime * moveSpeed;
+    }
+
+    /// <summary>
+    /// Checks collision.  This enemy doesn't care what kind of tap hits it, so type is ignored
+    /// </summary>
+    /// <param name="collision">The colliding object, plus other info</param>
+    public override void GetHit(float damage, TapType type)
+    {
+        base.TakeDamage(this.damage);
     }
 }

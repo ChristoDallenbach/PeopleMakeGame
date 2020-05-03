@@ -95,7 +95,7 @@ MonoBehaviour:
   health: 10
   damage: 5
   moveSpeed: 2
-  scoreValue: 20
+  scoreValue: 30
   isClone: 0
 --- !u!65 &1529932078652466162
 BoxCollider:

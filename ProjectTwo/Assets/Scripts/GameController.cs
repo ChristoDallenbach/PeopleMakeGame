@@ -20,6 +20,7 @@ public class GameController : MonoBehaviour
     [SerializeField] private float spawnRate;
     [SerializeField] private GameObject baseEnemy;
     [SerializeField] private GameObject[] specialEnemyList;
+    [SerializeField] private GameObject bossEnemy;
     [SerializeField] private GameObject indicator;
 
     // Start is called before the first frame update
@@ -71,8 +72,6 @@ public class GameController : MonoBehaviour
                 else if (enemyList[i].GetComponent<BaseEnemy>().isDying())
                 {
                     InceaseScore(enemyList[i].GetComponent<BaseEnemy>().ScoreValue());
-                    scoreText.text = "Score: " + score;
-
                     enemyList.RemoveAt(i);
                 }
             }
@@ -93,16 +92,17 @@ public class GameController : MonoBehaviour
         if (lastEnemy > spawnRate){//Checks if the time between enemy spawns is larger than the rate enemies should be spawning
             if (enemySpawnChance < Random.value) //Add a little randomness to the spawning, to make it feel more natural
             {
-                if (Random.value < 0.7f){
+                float random = Random.value;
+                if (random < 0.7f){
                     enemyList.Add(GameObject.Instantiate(baseEnemy, new Vector3(indicator.transform.up.x, indicator.transform.up.y, indicator.transform.up.z) * 100, Quaternion.Euler(0, 0, 0)));//instantiates the object far away.  Will be moved later
                     lastEnemy = 0.0f;
                 }
-                else if (Random.value < 0.9f){
+                else if (random < 0.9f){
                     enemyList.Add(GameObject.Instantiate(specialEnemyList[0], new Vector3(indicator.transform.up.x, indicator.transform.up.y, indicator.transform.up.z)*100, Quaternion.Euler(0, 0, 0)));//instantiates the object far away.  Will be moved later
                     lastEnemy = 0.0f;
                 }
                 else{
-                    enemyList.Add(GameObject.Instantiate(specialEnemyList[1], new Vector3(indicator.transform.up.x, indicator.transform.up.y, indicator.transform.up.z) * 100, Quaternion.Euler(0, 0, 0)));//instantiates the object far away.  Will be moved later
+                    enemyList.Add(GameObject.Instantiate(specialEnemyList[2], new Vector3(indicator.transform.up.x, indicator.transform.up.y, indicator.transform.up.z) * 100, Quaternion.Euler(0, 0, 0)));//instantiates the object far away.  Will be moved later
                     SpawnEnemy enemySpawn;
                     if (enemyList[enemyList.Count - 1].TryGetComponent<SpawnEnemy>(out enemySpawn))//Gets reference to the new enemy script
                     {
@@ -128,24 +128,46 @@ public class GameController : MonoBehaviour
     private void GenerateWaveEnemies(){
         //Simulate waves so that we have something for playtest, without me actually hand-crafting waves
         int enemyCount = 5 + wave * 3;//adds 3 enemies into every wave, plus a base of 5
-
-        for (int i = 0; i < enemyCount; i++)
+        if (wave % 5 == 0 && wave != 0) //spawn a boss every 5 waves, not including the first one.  Boss also has more health each iteration
         {
-            if (Random.value < 0.7f)
+            float bonusHealth = wave * 8 - 40;//adds an extra 4 hits every time you fight the boss
+            enemyList.Add(GameObject.Instantiate(bossEnemy, new Vector3(indicator.transform.up.x, indicator.transform.up.y, indicator.transform.up.z) * 100, Quaternion.Euler(0, 0, 0)));//instantiates the object far away.  Will be moved later
+            BossEnemy boss;
+            if (enemyList[0].TryGetComponent<BossEnemy>(out boss))//Gets reference to the boss script
             {
-                currentWave.Add(baseEnemy);
+                boss.AddBonusHealth(bonusHealth);
             }
-            else if (Random.value < 0.9f)
+        }
+        else
+        {
+            for (int i = 0; i < enemyCount; i++)
             {
-                currentWave.Add(specialEnemyList[0]);
-            }
-            else
-            {
-                currentWave.Add(specialEnemyList[1]);
-                SpawnEnemy enemySpawn;
-                if (currentWave[currentWave.Count - 1].TryGetComponent<SpawnEnemy>(out enemySpawn))
+                float random = Random.value;
+                if (random < 0.65f)
                 {
-                    enemySpawn.enemyList = enemyList;
+                    currentWave.Add(baseEnemy);
+                    lastEnemy = 0.0f;
+                }
+                else if (random < 0.85f)
+                {
+                    currentWave.Add(specialEnemyList[0]);
+                    lastEnemy = 0.0f;
+                }
+                else if (random < 0.95)
+                {
+                    currentWave.Add(specialEnemyList[1]);
+                    SpawnEnemy enemySpawn;
+                    if (currentWave[currentWave.Count - 1].TryGetComponent<SpawnEnemy>(out enemySpawn))//Gets reference to the new enemy script
+                    {
+                        //give them a reference to the enemy list so they can add their enemies into the list
+                        enemySpawn.enemyList = enemyList;
+                    }
+                    lastEnemy = 0.0f;
+                }
+                else
+                {
+                    currentWave.Add(specialEnemyList[2]);
+                    lastEnemy = 0.0f;
                 }
             }
         }
@@ -234,6 +256,9 @@ public class GameController : MonoBehaviour
     /// increase the score of the player
     /// </summary>
     /// <param name="scoreToAdd">score to add</param>
-    public void InceaseScore(int scoreToAdd) { score += scoreToAdd; }
+    public void InceaseScore(int scoreToAdd) { 
+        score += scoreToAdd;
+        scoreText.text = "Score: " + score;
+    }
 
 }
