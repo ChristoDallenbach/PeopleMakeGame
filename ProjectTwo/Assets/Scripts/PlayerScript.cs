@@ -141,6 +141,6 @@ public class PlayerScript : MonoBehaviour
     private void Die()
     {
         // go to the game over scene or just destroy player & pause scene w/ restart button
-        gameController.GetComponent<ChangeScene>().changeMenu("MainMenu");
+        gameController.GetComponent<ChangeScene>().changeMenu("GameOver");
     }
 }
