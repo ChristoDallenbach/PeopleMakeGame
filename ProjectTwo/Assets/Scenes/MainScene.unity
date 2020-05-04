@@ -1221,7 +1221,9 @@ MonoBehaviour:
   specialEnemyList:
   - {fileID: 4111676239509206188, guid: 4392299aace328b478210447ec2953f1, type: 3}
   - {fileID: 7195994292219055388, guid: 38d9bed9a0a355a42bc19e16958de41d, type: 3}
-  bossEnemy: {fileID: 0}
+  - {fileID: 6252557631651234732, guid: 828e7fc3642393a489653c80d66a1881, type: 3}
+  bossEnemy: {fileID: 7105552010868680109, guid: 60876b12492997f4da4e7abd00d59753,
+    type: 3}
   indicator: {fileID: 264861194}
 --- !u!4 &1601097426
 Transform:
