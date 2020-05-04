@@ -34,10 +34,14 @@ public class MenuScript : MonoBehaviour
     void Start()
     {
         //
-        paused = true;
+        //paused = true;
+        //Time.timeScale = 1;
+        //
+        //OpenStartMenu();
+        paused = false;
         Time.timeScale = 1;
-        
-        OpenStartMenu();
+
+        UnPause();
     }
 
     // Update is called once per frame
