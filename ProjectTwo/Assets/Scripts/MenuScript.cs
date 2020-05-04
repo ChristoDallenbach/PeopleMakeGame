@@ -53,6 +53,7 @@ public class MenuScript : MonoBehaviour
     //function to pull up pause screen
     public void Pause()
     {
+        
         CurrentState = GameStates.Paused;       
         paused = true;
         Time.timeScale = 0;
